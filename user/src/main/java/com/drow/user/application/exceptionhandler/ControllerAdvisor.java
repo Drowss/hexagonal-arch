@@ -1,6 +1,7 @@
 package com.drow.user.application.exceptionhandler;
 
 import com.drow.user.application.exception.UserUnderageException;
+import com.drow.user.infrastructure.exception.UserAlreadyExists;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -19,6 +20,12 @@ public class ControllerAdvisor {
     @ExceptionHandler(UserUnderageException.class)
     public ResponseEntity<Map<String, String>> handleUserUnderageException(UserUnderageException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(Map.of(MESSAGE, e.getMessage()));
+    }
+
+    @ExceptionHandler(UserAlreadyExists.class)
+    public ResponseEntity<Map<String, String>> handleUserAlreadyExists(UserAlreadyExists e) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
                 .body(Map.of(MESSAGE, e.getMessage()));
     }
 
