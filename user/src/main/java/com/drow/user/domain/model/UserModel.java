@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserModel {
-    private String documentoDeIdentidad;
+    private Integer documentoDeIdentidad;
     private String nombre;
     private String apellido;
     private Rol rol;

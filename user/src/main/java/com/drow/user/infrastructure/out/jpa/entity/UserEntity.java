@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Data
 public class UserEntity {
     @Id
-    private String documentoDeIdentidad;
+    private Integer documentoDeIdentidad;
     private String nombre;
     private String apellido;
     @Enumerated(EnumType.STRING)
