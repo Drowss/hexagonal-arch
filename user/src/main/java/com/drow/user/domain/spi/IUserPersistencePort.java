@@ -3,6 +3,6 @@ package com.drow.user.domain.spi;
 import com.drow.user.domain.model.UserModel;
 
 public interface IUserPersistencePort {
-    UserModel saveUser(UserModel userModel);
+    void saveUser(UserModel userModel);
     Boolean userExists(Integer documentoDeIdentidad);
 }
