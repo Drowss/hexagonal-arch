@@ -13,7 +13,8 @@ public class UserUseCase implements IUserServicePort {
 
     @Override
     public void saveUser(UserModel userModel) {
-        if (userPersistencePort.userExists(userModel.getDocumentoDeIdentidad())) throw new UserAlreadyExists("El usuario ya existe");
+        if (Boolean.TRUE.equals(userPersistencePort.userExists(userModel.getDocumentoDeIdentidad())))
+            throw new UserAlreadyExists("El usuario ya existe");
         userPersistencePort.saveUser(userModel);
     }
 }
