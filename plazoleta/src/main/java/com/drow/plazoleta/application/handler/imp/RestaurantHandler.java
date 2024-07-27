@@ -23,18 +23,8 @@ public class RestaurantHandler implements IRestaurantHandler {
     private final IRestaurantRequestMapper restaurantRequestMapper;
 
     @Override
-    public void saveRestaurant(RestaurantRequestDto restaurantRequestDto, HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        Cookie roleCookie = Arrays.stream(cookies)
-                .filter(cookie -> "userRole".equals(cookie.getName()))
-                .findFirst()
-                .orElse(null);
-
-        if (roleCookie != null && "ADMINISTRADOR".equals(roleCookie.getValue())){
-            RestaurantModel restaurantModel = restaurantRequestMapper.toRestaurant(restaurantRequestDto);
-            restaurantServicePort.saveRestaurant(restaurantModel);
-        } else {
-            throw new UserNoPermissions("No tienes permisos para realizar esta acción");
-        }
+    public void saveRestaurant(RestaurantRequestDto restaurantRequestDto) {
+        RestaurantModel restaurantModel = restaurantRequestMapper.toRestaurant(restaurantRequestDto);
+        restaurantServicePort.saveRestaurant(restaurantModel);
     }
 }

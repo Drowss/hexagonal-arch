@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/plazoleta
+    url: jdbc:postgresql://localhost:5432/${PLAZOLETA_DB_DATABASE}
     username: postgres
-    password: 1010
+    password: ${PLAZOLETA_DB_PASSWORD}
   application:
     name: plazoleta
 

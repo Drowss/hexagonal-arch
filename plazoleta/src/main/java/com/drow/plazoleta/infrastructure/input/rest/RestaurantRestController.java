@@ -31,7 +31,7 @@ public class RestaurantRestController {
     @PostMapping("/")
     public ResponseEntity<Void> saveObject(@RequestBody @Valid RestaurantRequestDto restaurantRequestDto,
                                            HttpServletRequest request) {
-        restaurantHandler.saveRestaurant(restaurantRequestDto, request);
+        restaurantHandler.saveRestaurant(restaurantRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

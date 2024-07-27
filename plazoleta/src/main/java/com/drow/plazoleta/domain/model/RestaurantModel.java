@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RestaurantModel {
-    private Long id;
+    private String nit;
     private Integer idPropietario;
     private String nombre;
-    private String nit;
     private String direccion;
     private String telefono;
     private String urlLogo;

@@ -12,11 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RestaurantEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String nit;
     private Integer idPropietario;
     private String nombre;
-    private String nit;
     private String direccion;
     private String telefono;
     private String urlLogo;

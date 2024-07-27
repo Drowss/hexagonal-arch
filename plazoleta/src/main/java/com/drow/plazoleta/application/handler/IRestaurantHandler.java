@@ -4,5 +4,5 @@ import com.drow.plazoleta.application.dto.request.RestaurantRequestDto;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface IRestaurantHandler {
-    void saveRestaurant(RestaurantRequestDto restaurantRequestDto, HttpServletRequest request);
+    void saveRestaurant(RestaurantRequestDto restaurantRequestDto);
 }
