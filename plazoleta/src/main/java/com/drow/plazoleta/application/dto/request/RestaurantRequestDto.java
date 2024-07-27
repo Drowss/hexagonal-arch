@@ -14,15 +14,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RestaurantRequestDto {
+
+    @NotNull
+    @NotBlank
+    @Pattern(regexp = "\\d+", message = "El NIT debe contener solo números")
+    private String nit;
+
     private Integer idPropietario;
 
     @NotNull
     @NotBlank
     @Pattern(regexp = "^(?!\\d+$)[\\w\\s]+$", message = "El nombre del restaurante no puede ser solo números")
     private String nombre;
-
-    @Pattern(regexp = "\\d+", message = "El NIT debe contener solo números")
-    private String nit;
 
     @NotNull
     @NotBlank
