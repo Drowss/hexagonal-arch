@@ -1,7 +1,5 @@
 package com.drow.plazoleta.application.dto.request;
 
-import com.drow.plazoleta.domain.model.CategoryModel;
-import com.drow.plazoleta.domain.model.RestaurantModel;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -13,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class DishRequestDto {
     @NotNull(message = "El nombre del plato no puede ser nulo")
     @NotEmpty(message = "El nombre del plato no puede estar vacío")
@@ -34,8 +31,8 @@ public class DishRequestDto {
     private String imageUrl;
 
     @NotNull(message = "La categoría no puede ser nula")
-    private CategoryModel category;
+    private Integer categoryId;
 
     @NotNull(message = "El restaurante no puede ser nulo")
-    private RestaurantModel restaurant;
+    private String restaurantNit;
 }

@@ -1,7 +1,7 @@
 package com.drow.plazoleta.infrastructure.input.rest;
 
-import com.drow.plazoleta.application.dto.request.RestaurantRequestDto;
-import com.drow.plazoleta.application.handler.IRestaurantHandler;
+import com.drow.plazoleta.application.dto.request.CategoryRequestDto;
+import com.drow.plazoleta.application.handler.ICategoryHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,20 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/restaurant")
+@RequestMapping("/api/v1/category")
 @RequiredArgsConstructor
-public class RestaurantRestController {
+public class CategoryRestController {
 
-    private final IRestaurantHandler restaurantHandler;
+    private final ICategoryHandler categoryHandler;
 
-    @Operation(summary = "Add a new restaurant")
+    @Operation(summary = "Add a new category")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Restaurant created", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Restaurant already exists", content = @Content)
+            @ApiResponse(responseCode = "201", description = "Category created", content = @Content)
     })
     @PostMapping("/save")
-    public ResponseEntity<Void> saveObject(@RequestBody @Valid RestaurantRequestDto restaurantRequestDto) {
-        restaurantHandler.saveRestaurant(restaurantRequestDto);
+    public ResponseEntity<Void> saveCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDto) {
+        categoryHandler.saveCategory(categoryRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

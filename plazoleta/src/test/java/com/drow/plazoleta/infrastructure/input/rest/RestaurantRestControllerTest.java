@@ -46,7 +46,7 @@ class RestaurantRestControllerTest {
     @Test
     void restaurantController_SaveRestaurant_ReturnVoid() throws Exception {
 
-        ResultActions response = mockMvc.perform(post("/api/v1/restaurant/")
+        ResultActions response = mockMvc.perform(post("/api/v1/restaurant/save")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(restaurantRequestDto)));
 

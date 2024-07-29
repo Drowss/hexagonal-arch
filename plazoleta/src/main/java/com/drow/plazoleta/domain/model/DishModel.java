@@ -10,19 +10,19 @@ public class DishModel {
     private CategoryModel category;
     private RestaurantModel restaurant;
 
-    public DishModel(String name, Float price, String description, String imageUrl, CategoryModel category, RestaurantModel restaurant) {
+    public DishModel(String name, Float price, Boolean active, String description, String imageUrl, CategoryModel category, RestaurantModel restaurant) {
         this.name = name;
         this.price = price;
+        this.active = active;
         this.description = description;
         this.imageUrl = imageUrl;
         this.category = category;
         this.restaurant = restaurant;
     }
 
-    public DishModel(String name, Float price, Boolean active, String description, String imageUrl, CategoryModel category, RestaurantModel restaurant) {
+    public DishModel(String name, Float price, String description, String imageUrl, CategoryModel category, RestaurantModel restaurant) {
         this.name = name;
         this.price = price;
-        this.active = active;
         this.description = description;
         this.imageUrl = imageUrl;
         this.category = category;

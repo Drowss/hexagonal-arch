@@ -17,4 +17,9 @@ public class RestaurantUseCase implements IRestaurantServicePort {
             throw new RestaurantAlreadyExists("El restaurante ya existe");
         restaurantPersistencePort.saveRestaurant(restaurantModel);
     }
+
+    @Override
+    public RestaurantModel getRestaurantByNit(String restaurantNit) {
+        return restaurantPersistencePort.getRestaurantByNit(restaurantNit);
+    }
 }

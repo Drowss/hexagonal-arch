@@ -5,4 +5,6 @@ import com.drow.plazoleta.domain.model.DishModel;
 
 public interface ICategoryPersistencePort {
     CategoryModel saveCategory(CategoryModel categoryModel);
+
+    CategoryModel getCategoryById(Integer categoryId);
 }

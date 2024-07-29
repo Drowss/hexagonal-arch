@@ -15,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class CategoryHandler implements ICategoryHandler {
 
     private final ICategoryServicePort categoryServicePort;
-    private final ICategoryRequestMapper restaurantRequestMapper;
+    private final ICategoryRequestMapper categoryRequestMapper;
 
     @Override
     public void saveCategory(CategoryRequestDto categoryRequestDto) {
-        CategoryModel categoryModel = restaurantRequestMapper.toCategory(categoryRequestDto);
+        CategoryModel categoryModel = categoryRequestMapper.toCategory(categoryRequestDto);
         categoryServicePort.saveCategory(categoryModel);
     }
 }

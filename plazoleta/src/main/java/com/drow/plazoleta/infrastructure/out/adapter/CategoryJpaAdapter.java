@@ -1,5 +1,6 @@
 package com.drow.plazoleta.infrastructure.out.adapter;
 
+import com.drow.plazoleta.application.exception.CategoryDoesntExist;
 import com.drow.plazoleta.domain.model.CategoryModel;
 import com.drow.plazoleta.domain.spi.ICategoryPersistencePort;
 import com.drow.plazoleta.infrastructure.out.entity.CategoryEntity;
@@ -19,5 +20,12 @@ public class CategoryJpaAdapter implements ICategoryPersistencePort {
     public CategoryModel saveCategory(CategoryModel categoryModel) {
         CategoryEntity categoryEntity = categoryRepository.save(categoryEntityMapper.toEntity(categoryModel));
         return categoryEntityMapper.toModel(categoryEntity);
+    }
+
+    @Override
+    public CategoryModel getCategoryById(Integer categoryId) {
+        return categoryRepository.findById(categoryId)
+                .map(categoryEntityMapper::toModel)
+                .orElseThrow(() -> new CategoryDoesntExist("Category not found"));
     }
 }

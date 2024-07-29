@@ -1,5 +1,6 @@
 package com.drow.plazoleta.infrastructure.out.adapter;
 
+import com.drow.plazoleta.application.exception.RestaurantDoesntExist;
 import com.drow.plazoleta.domain.model.RestaurantModel;
 import com.drow.plazoleta.domain.spi.IRestaurantPersistencePort;
 import com.drow.plazoleta.infrastructure.out.entity.RestaurantEntity;
@@ -22,5 +23,12 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
     @Override
     public Boolean restaurantExists(String nit) {
         return restaurantRepository.existsById(nit);
+    }
+
+    @Override
+    public RestaurantModel getRestaurantByNit(String restaurantNit) {
+        return restaurantRepository.findById(restaurantNit)
+                .map(restaurantEntityMapper::toModel)
+                .orElseThrow(() -> new RestaurantDoesntExist("Restaurant not found"));
     }
 }
