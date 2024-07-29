@@ -9,17 +9,14 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "restaurantTable")
+@Table(name = "categoryTable")
 @AllArgsConstructor
 @NoArgsConstructor
-public class RestaurantEntity {
+public class CategoryEntity {
     @Id
-    private String nit;
-    private Integer idPropietario;
-    private String nombre;
-    private String direccion;
-    private String telefono;
-    private String urlLogo;
-    @OneToMany(mappedBy = "restaurant")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    private String name;
+    @OneToMany(mappedBy = "category")
     private List<DishEntity> dishes;
 }
