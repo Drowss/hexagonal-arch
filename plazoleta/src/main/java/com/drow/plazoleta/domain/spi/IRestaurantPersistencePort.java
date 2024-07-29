@@ -4,4 +4,6 @@ import com.drow.plazoleta.domain.model.RestaurantModel;
 
 public interface IRestaurantPersistencePort {
     RestaurantModel saveRestaurant(RestaurantModel restaurantModel);
+
+    Boolean restaurantExists(String nit);
 }
