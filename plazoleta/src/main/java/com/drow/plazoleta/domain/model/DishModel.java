@@ -7,26 +7,26 @@ public class DishModel {
     private Boolean active;
     private String description;
     private String imageUrl;
-    private CategoryModel category;
-    private RestaurantModel restaurant;
+    private Integer categoryId;
+    private String restaurantNit;
 
-    public DishModel(String name, Float price, Boolean active, String description, String imageUrl, CategoryModel category, RestaurantModel restaurant) {
+    public DishModel(String name, Float price, Boolean active, String description, String imageUrl, Integer categoryId, String restaurantNit) {
         this.name = name;
         this.price = price;
         this.active = active;
         this.description = description;
         this.imageUrl = imageUrl;
-        this.category = category;
-        this.restaurant = restaurant;
+        this.categoryId = categoryId;
+        this.restaurantNit = restaurantNit;
     }
 
-    public DishModel(String name, Float price, String description, String imageUrl, CategoryModel category, RestaurantModel restaurant) {
+    public DishModel(String name, Float price, String description, String imageUrl, Integer categoryId, String restaurantNit) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.imageUrl = imageUrl;
-        this.category = category;
-        this.restaurant = restaurant;
+        this.categoryId = categoryId;
+        this.restaurantNit = restaurantNit;
     }
 
     public DishModel() {
@@ -72,19 +72,19 @@ public class DishModel {
         this.imageUrl = imageUrl;
     }
 
-    public CategoryModel getCategory() {
-        return category;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(CategoryModel category) {
-        this.category = category;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public RestaurantModel getRestaurant() {
-        return restaurant;
+    public String getRestaurantNit() {
+        return restaurantNit;
     }
 
-    public void setRestaurant(RestaurantModel restaurant) {
-        this.restaurant = restaurant;
+    public void setRestaurantNit(String restaurantNit) {
+        this.restaurantNit = restaurantNit;
     }
 }
