@@ -97,7 +97,6 @@
             <version>2.3.230</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
     <dependencyManagement>
         <dependencies>
