@@ -1,9 +1,13 @@
 package com.drow.plazoleta.infrastructure.configuration;
 
+import com.drow.plazoleta.domain.api.ICategoryServicePort;
+import com.drow.plazoleta.domain.api.IDishServicePort;
 import com.drow.plazoleta.domain.api.IRestaurantServicePort;
 import com.drow.plazoleta.domain.spi.ICategoryPersistencePort;
 import com.drow.plazoleta.domain.spi.IDishPersistencePort;
 import com.drow.plazoleta.domain.spi.IRestaurantPersistencePort;
+import com.drow.plazoleta.domain.usecase.CategoryUseCase;
+import com.drow.plazoleta.domain.usecase.DishUseCase;
 import com.drow.plazoleta.domain.usecase.RestaurantUseCase;
 import com.drow.plazoleta.infrastructure.out.adapter.CategoryJpaAdapter;
 import com.drow.plazoleta.infrastructure.out.adapter.DishJpaAdapter;
@@ -35,6 +39,16 @@ public class BeanConfiguration {
     }
 
     @Bean
+    public ICategoryServicePort categoryServicePort() {
+        return new CategoryUseCase(categoryPersistencePort());
+    }
+
+    @Bean
+    public IDishServicePort dishServicePort() {
+        return new DishUseCase(dishPersistencePort());
+    }
+
+    @Bean
     public IRestaurantPersistencePort restaurantPersistencePort() {
         return new RestaurantJpaAdapter(restaurantRepository, restaurantEntityMapper);
     }
@@ -48,5 +62,4 @@ public class BeanConfiguration {
     public IDishPersistencePort dishPersistencePort() {
         return new DishJpaAdapter(dishRepository, dishEntityMapper);
     }
-
 }
