@@ -1,9 +1,11 @@
 package com.drow.user.application.exceptionhandler;
 
+import com.drow.user.application.exception.IncorrectPassword;
 import com.drow.user.application.exception.UserUnderageException;
 import com.drow.user.infrastructure.exception.UserAlreadyExists;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -38,5 +40,17 @@ public class ControllerAdvisor {
             errors.put(fieldName, errorMessage);
         });
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
+    }
+
+    @ExceptionHandler(IncorrectPassword.class)
+    public ResponseEntity<Map<String, String>> handleIncorrectPassword(IncorrectPassword e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(MESSAGE, e.getMessage()));
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleUsernameNotFoundException(UsernameNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of(MESSAGE, e.getMessage()));
     }
 }

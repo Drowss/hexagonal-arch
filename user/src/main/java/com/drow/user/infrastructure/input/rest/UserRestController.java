@@ -1,11 +1,13 @@
 package com.drow.user.infrastructure.input.rest;
 
+import com.drow.user.application.dto.request.UserLoginRequestDto;
 import com.drow.user.application.dto.request.UserRequestDto;
 import com.drow.user.application.handler.IUserHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,9 +29,21 @@ public class UserRestController {
             @ApiResponse(responseCode = "201", description = "user created", content = @Content),
             @ApiResponse(responseCode = "409", description = "user already exists", content = @Content)
     })
-    @PostMapping("/")
+    @PostMapping("/save")
     public ResponseEntity<Void> saveObject(@RequestBody @Valid UserRequestDto userRequestDto) {
         userHandler.saveUser(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Login a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "user logged in", content = @Content),
+            @ApiResponse(responseCode = "401", description = "user not found", content = @Content)
+    })
+    @PostMapping("/login")
+    public ResponseEntity<Void> loginObject(@RequestBody @Valid UserLoginRequestDto userLoginRequestDto,
+                                            HttpServletResponse response) {
+        userHandler.loginUser(userLoginRequestDto, response);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

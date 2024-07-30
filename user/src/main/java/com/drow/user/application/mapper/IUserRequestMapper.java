@@ -1,6 +1,8 @@
 package com.drow.user.application.mapper;
 
+import com.drow.user.application.dto.request.UserLoginRequestDto;
 import com.drow.user.application.dto.request.UserRequestDto;
+import com.drow.user.domain.model.UserLoginModel;
 import com.drow.user.domain.model.UserModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -10,4 +12,6 @@ import org.mapstruct.ReportingPolicy;
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IUserRequestMapper {
     UserModel toUserModel(UserRequestDto userRequestDto);
+
+    UserLoginModel toUserLoginModel(UserLoginRequestDto userLoginRequestDto);
 }

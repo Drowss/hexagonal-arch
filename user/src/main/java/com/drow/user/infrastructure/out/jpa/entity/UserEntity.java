@@ -22,6 +22,7 @@ public class UserEntity {
     private Rol rol;
     private String celular;
     private LocalDate fechaNacimiento;
+    @Column(unique = true)
     private String correo;
     private String clave;
 }

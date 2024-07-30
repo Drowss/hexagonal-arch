@@ -6,7 +6,9 @@ import com.drow.user.infrastructure.exception.UserAlreadyExists;
 import com.drow.user.infrastructure.out.jpa.entity.UserEntity;
 import com.drow.user.infrastructure.out.jpa.mapper.IUserEntityMapper;
 import com.drow.user.infrastructure.out.jpa.repository.IUserRepository;
+import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @RequiredArgsConstructor
 public class UserJpaAdapter implements IUserPersistencePort {
@@ -23,4 +25,10 @@ public class UserJpaAdapter implements IUserPersistencePort {
     public Boolean userExists(Integer documentoDeIdentidad) {
         return userRepository.existsById(documentoDeIdentidad);
     }
+
+    @Override
+    public UserEntity getUserByCorreo(String correo) {
+        return userRepository.findByCorreo(correo).orElseThrow(() -> new UsernameNotFoundException("El usuario no existe"));
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.drow.user.infrastructure.configuration;
 
+import com.drow.user.application.jwt.IJwtHandler;
 import com.drow.user.domain.api.IUserServicePort;
 import com.drow.user.domain.spi.IUserPersistencePort;
 import com.drow.user.domain.usecase.UserUseCase;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class BeanConfiguration {
     private final IUserRepository userRepository;
     private final IUserEntityMapper userEntityMapper;
+    private final IJwtHandler jwtHandler;
 
     @Bean
     public IUserPersistencePort userPersistencePort() {
@@ -25,7 +27,7 @@ public class BeanConfiguration {
 
     @Bean
     public IUserServicePort userServicePort() {
-        return new UserUseCase(userPersistencePort());
+        return new UserUseCase(userPersistencePort(), encoder(), jwtHandler);
     }
 
     @Bean
