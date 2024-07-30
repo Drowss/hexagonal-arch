@@ -1,6 +1,5 @@
 package com.drow.plazoleta.domain.usecase;
 
-import com.drow.plazoleta.application.mapper.IDishRequestMapper;
 import com.drow.plazoleta.domain.api.IDishServicePort;
 import com.drow.plazoleta.domain.model.CategoryModel;
 import com.drow.plazoleta.domain.model.DishModel;
