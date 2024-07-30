@@ -1,6 +1,7 @@
 package com.drow.plazoleta.infrastructure.out.adapter;
 
 
+import com.drow.plazoleta.domain.exception.DishNotFound;
 import com.drow.plazoleta.domain.model.DishModel;
 import com.drow.plazoleta.domain.spi.IDishPersistencePort;
 import com.drow.plazoleta.infrastructure.out.entity.DishEntity;
@@ -19,4 +20,11 @@ public class DishJpaAdapter implements IDishPersistencePort {
         DishEntity savedDish = dishRepository.save(dishEntity);
         return dishEntityMapper.toModel(savedDish);
     }
+
+    @Override
+    public DishEntity getDishById(Integer id) {
+        return dishRepository.findById(id).orElseThrow(() -> new DishNotFound("Dish not found"));
+    }
+
+
 }
