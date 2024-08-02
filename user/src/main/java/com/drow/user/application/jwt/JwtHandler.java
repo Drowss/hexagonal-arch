@@ -1,6 +1,5 @@
 package com.drow.user.application.jwt;
 
-import com.drow.user.application.jwt.IJwtHandler;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

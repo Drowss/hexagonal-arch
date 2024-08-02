@@ -60,7 +60,7 @@ class DishUseCaseTest {
 
         restaurantModel = new RestaurantModel();
         restaurantModel.setDireccion("Calle 123");
-        restaurantModel.setIdPropietario(1);
+        restaurantModel.setNit("413213");
         restaurantModel.setNit("1234");
         restaurantModel.setNombre("Restaurant");
         restaurantModel.setTelefono("1234567");

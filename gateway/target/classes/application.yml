@@ -24,3 +24,14 @@ spring.cloud.gateway:
         allowedHeaders:
           - "*"
         allowCredentials: true
+
+  cloud:
+    gateway:
+      routes:
+        - id: plazoleta
+          uri: http://plazoleta
+          predicates:
+            - Path=/plazoleta/**
+          filters:
+            - StripPrefix=1
+            - RequestHeaderToRequestUri=Cookie

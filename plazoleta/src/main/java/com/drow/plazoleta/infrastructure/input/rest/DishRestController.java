@@ -39,4 +39,14 @@ public class DishRestController {
         dishHandler.modifyDish(modifyDishRequestDto);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
+
+    @Operation(summary = "Toggle a dish")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Dish toggled successfully", content = @Content)
+    })
+    @PutMapping("/toggle")
+    public ResponseEntity<Void> toggleDish(@RequestParam Integer id, @CookieValue("token") String token) {
+        dishHandler.toggleDish(id, token);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

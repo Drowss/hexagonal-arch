@@ -1,5 +1,7 @@
 package com.drow.plazoleta.domain.usecase;
 
+import com.drow.plazoleta.application.exception.UserNoPermissions;
+import com.drow.plazoleta.application.jwt.JwtHandler;
 import com.drow.plazoleta.application.mapper.IDishRequestMapper;
 import com.drow.plazoleta.domain.api.IDishServicePort;
 import com.drow.plazoleta.domain.model.CategoryModel;
@@ -26,6 +28,7 @@ public class DishUseCase implements IDishServicePort {
     private final ICategoryEntityMapper categoryEntityMapper;
     private final IRestaurantEntityMapper restaurantEntityMapper;
     private final IDishEntityMapper dishEntityMapper;
+    private final JwtHandler jwtHandler;
 
     @Override
     public void saveDish(DishModel dishModel) {
@@ -43,5 +46,18 @@ public class DishUseCase implements IDishServicePort {
         Optional.ofNullable(modifyDishModel.getPrice()).ifPresent(dishEntity::setPrice);
         Optional.ofNullable(modifyDishModel.getDescription()).ifPresent(dishEntity::setDescription);
         dishPersistencePort.saveDish(dishEntity);
+    }
+
+    @Override
+    public void toggleDish(Integer id, String token) {
+        DishEntity dishEntity = dishPersistencePort.getDishById(id);
+        RestaurantModel restaurantModel = restaurantPersistencePort.getRestaurantByNit(dishEntity.getRestaurant().getNit());
+        System.out.println("llego");
+        if (Integer.parseInt(restaurantModel.getCedulaPropietario()) == jwtHandler.getCedulaFromToken(token)) {
+            dishEntity.setActive(!dishEntity.getActive());
+            dishPersistencePort.saveDish(dishEntity);
+        } else {
+            throw new UserNoPermissions("No tienes permisos para realizar esta acción");
+        }
     }
 }

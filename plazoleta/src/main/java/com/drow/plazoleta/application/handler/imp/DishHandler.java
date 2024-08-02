@@ -30,4 +30,9 @@ public class DishHandler implements IDishHandler {
         ModifyDishModel modifyDishModel = dishRequestMapper.toModifyDish(modifyDishRequestDto);
         dishServicePort.modifyDish(modifyDishModel);
     }
+
+    @Override
+    public void toggleDish(Integer id, String token) {
+        dishServicePort.toggleDish(id, token);
+    }
 }

@@ -7,4 +7,6 @@ public interface IDishServicePort {
     void saveDish(DishModel dishModel);
 
     void modifyDish(ModifyDishModel modifyDishModel);
+
+    void toggleDish(Integer id, String token);
 }

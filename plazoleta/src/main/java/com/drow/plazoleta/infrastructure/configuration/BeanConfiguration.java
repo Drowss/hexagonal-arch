@@ -1,5 +1,6 @@
 package com.drow.plazoleta.infrastructure.configuration;
 
+import com.drow.plazoleta.application.jwt.JwtHandler;
 import com.drow.plazoleta.domain.api.ICategoryServicePort;
 import com.drow.plazoleta.domain.api.IDishServicePort;
 import com.drow.plazoleta.domain.api.IRestaurantServicePort;
@@ -32,6 +33,7 @@ public class BeanConfiguration {
     private final ICategoryEntityMapper categoryEntityMapper;
     private final IDishRepository dishRepository;
     private final IDishEntityMapper dishEntityMapper;
+    private final JwtHandler jwtHandler;
 
     @Bean
     public IRestaurantServicePort restaurantServicePort() {
@@ -50,7 +52,8 @@ public class BeanConfiguration {
                 restaurantPersistencePort(),
                 categoryEntityMapper,
                 restaurantEntityMapper,
-                dishEntityMapper);
+                dishEntityMapper,
+                jwtHandler);
     }
 
     @Bean

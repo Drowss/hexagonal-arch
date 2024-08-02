@@ -26,7 +26,7 @@ class IRestaurantRepositoryTest {
         restaurantEntity.setDireccion("Calle 123");
         restaurantEntity.setTelefono("1234567");
         restaurantEntity.setUrlLogo("https://www.google.com");
-        restaurantEntity.setIdPropietario(1);
+        restaurantEntity.setNit("413213");
         // Act
         RestaurantEntity savedRestaurant = restaurantJpaAdapter.save(restaurantEntity);
         // Assert

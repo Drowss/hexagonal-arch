@@ -2,10 +2,8 @@ package com.drow.user.domain.usecase;
 
 import com.drow.user.application.dto.response.TokenResponseDto;
 import com.drow.user.application.exception.IncorrectPassword;
-import com.drow.user.application.exception.UserUnderageException;
 import com.drow.user.application.jwt.IJwtHandler;
 import com.drow.user.domain.api.IUserServicePort;
-import com.drow.user.domain.model.Rol;
 import com.drow.user.domain.model.UserLoginModel;
 import com.drow.user.domain.model.UserModel;
 import com.drow.user.domain.spi.IUserPasswordEncrypter;
@@ -16,11 +14,8 @@ import com.drow.user.infrastructure.out.jpa.mapper.IUserEntityMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.Map;
 
 @AllArgsConstructor

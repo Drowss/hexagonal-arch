@@ -7,4 +7,6 @@ public interface IDishHandler {
     void saveDish(DishRequestDto dishRequestDto);
 
     void modifyDish(ModifyDishRequestDto modifyDishRequestDto);
+
+    void toggleDish(Integer id, String token);
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RestaurantModel {
     private String nit;
-    private Integer idPropietario;
+    private String cedulaPropietario;
     private String nombre;
     private String direccion;
     private String telefono;

@@ -20,7 +20,9 @@ public class RestaurantRequestDto {
     @Pattern(regexp = "\\d+", message = "El NIT debe contener solo números")
     private String nit;
 
-    private Integer idPropietario;
+    @NotNull
+    @NotBlank
+    private String cedulaPropietario;
 
     @NotNull
     @NotBlank

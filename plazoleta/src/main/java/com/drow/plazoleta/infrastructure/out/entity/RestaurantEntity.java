@@ -15,7 +15,7 @@ import java.util.List;
 public class RestaurantEntity {
     @Id
     private String nit;
-    private Integer idPropietario;
+    private String cedulaPropietario;
     private String nombre;
     private String direccion;
     private String telefono;

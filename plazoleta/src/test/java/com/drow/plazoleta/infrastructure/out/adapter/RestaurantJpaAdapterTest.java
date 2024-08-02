@@ -36,14 +36,14 @@ class RestaurantJpaAdapterTest {
         restaurantEntity.setDireccion("Calle 123");
         restaurantEntity.setTelefono("1234567");
         restaurantEntity.setUrlLogo("https://www.google.com");
-        restaurantEntity.setIdPropietario(1);
+        restaurantEntity.setNit("413213");
         RestaurantModel restaurantModel = RestaurantModel.builder()
                 .nit("1234")
                 .nombre("Restaurant")
                 .direccion("Calle 123")
                 .telefono("1234567")
                 .urlLogo("https://www.google.com")
-                .idPropietario(1)
+                .nit("413213")
                 .build();
         // Act
         when(restaurantEntityMapper.toEntity(any(RestaurantModel.class))).thenReturn(restaurantEntity);

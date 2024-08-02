@@ -38,7 +38,7 @@ class RestaurantHandlerTest {
                 .direccion("Calle 123")
                 .telefono("1234567")
                 .urlLogo("https://www.google.com")
-                .idPropietario(1)
+                .nit("413213")
                 .build();
 
         restaurantRequestDto = RestaurantRequestDto.builder()
@@ -47,7 +47,7 @@ class RestaurantHandlerTest {
                 .direccion("Calle 123")
                 .telefono("1234567")
                 .urlLogo("https://www.google.com")
-                .idPropietario(1)
+                .nit("413213")
                 .build();
     }
 

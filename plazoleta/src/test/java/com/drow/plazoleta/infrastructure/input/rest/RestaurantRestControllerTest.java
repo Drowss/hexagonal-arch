@@ -39,7 +39,7 @@ class RestaurantRestControllerTest {
                 .direccion("Calle 123")
                 .telefono("1234567")
                 .urlLogo("https://www.google.com")
-                .idPropietario(1)
+                .nit("1312321")
                 .build();
     }
 

@@ -30,7 +30,7 @@ class RestaurantUseCaseTest {
                 .direccion("Calle 123")
                 .telefono("1234567")
                 .urlLogo("https://www.google.com")
-                .idPropietario(1)
+                .nit("413213")
                 .build();
         // Act
         restaurantUseCase.saveRestaurant(restaurantModel);

@@ -2,7 +2,6 @@ package com.drow.user.application.jwt;
 
 import io.jsonwebtoken.Claims;
 
-import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Map;
 
