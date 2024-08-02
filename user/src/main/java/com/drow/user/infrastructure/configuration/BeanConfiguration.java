@@ -2,9 +2,11 @@ package com.drow.user.infrastructure.configuration;
 
 import com.drow.user.application.jwt.IJwtHandler;
 import com.drow.user.domain.api.IUserServicePort;
+import com.drow.user.domain.spi.IUserPasswordEncrypter;
 import com.drow.user.domain.spi.IUserPersistencePort;
 import com.drow.user.domain.usecase.UserUseCase;
 import com.drow.user.infrastructure.out.jpa.adapter.UserJpaAdapter;
+import com.drow.user.infrastructure.out.jpa.adapter.UserPasswordEncrypter;
 import com.drow.user.infrastructure.out.jpa.mapper.IUserEntityMapper;
 import com.drow.user.infrastructure.out.jpa.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +29,16 @@ public class BeanConfiguration {
 
     @Bean
     public IUserServicePort userServicePort() {
-        return new UserUseCase(userPersistencePort(), encoder(), jwtHandler);
+        return new UserUseCase(userPersistencePort(), userPasswordEncrypter(), jwtHandler, userEntityMapper);
     }
 
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public IUserPasswordEncrypter userPasswordEncrypter() {
+        return new UserPasswordEncrypter(encoder());
     }
 }

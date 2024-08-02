@@ -21,10 +21,11 @@ public class JwtHandler implements IJwtHandler {
     private String jwtSecret;
 
     @Override
-    public String generateToken(Map<String, Object> extraClaims) {
+    public String generateToken(Map<String, Object> extraClaims, String correo) {
         return Jwts
                 .builder()
-                .setSubject(extraClaims.get("useremail").toString())
+                .setClaims(extraClaims)
+                .setSubject(correo)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -44,6 +45,11 @@ public class JwtHandler implements IJwtHandler {
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         Claims claims = getClaims(token);
         return claimsResolver.apply(claims);
+    }
+
+    @Override
+    public String getCedulaFromToken(String token) {
+        return getClaimFromToken(token, claims -> claims.get("cedula", String.class));
     }
 
 
