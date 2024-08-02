@@ -56,4 +56,11 @@ public class UserHandler implements IUserHandler {
         userModel.setRol(Rol.EMPLEADO);
         userServicePort.saveUser(userModel);
     }
+
+    @Override
+    public void saveClient(EmployeeRequestDto employeeRequestDto) {
+        UserModel userModel = userRequestMapper.toClientModel(employeeRequestDto);
+        userModel.setRol(Rol.CLIENTE);
+        userServicePort.saveUser(userModel);
+    }
 }

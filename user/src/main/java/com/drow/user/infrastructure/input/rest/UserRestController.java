@@ -67,4 +67,15 @@ public class UserRestController {
         userHandler.saveEmployee(employeeRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @Operation(summary = "Client sign up")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Employee saved", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Employee already exists", content = @Content)
+    })
+    @PostMapping("/save/client")
+    public ResponseEntity<Void> saveClient(@RequestBody @Valid EmployeeRequestDto employeeRequestDto) {
+        userHandler.saveClient(employeeRequestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

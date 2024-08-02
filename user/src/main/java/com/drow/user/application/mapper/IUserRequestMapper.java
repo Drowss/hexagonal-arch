@@ -18,4 +18,6 @@ public interface IUserRequestMapper {
     UserLoginModel toUserLoginModel(UserLoginRequestDto userLoginRequestDto);
 
     UserModel toEmployeeModel(EmployeeRequestDto employeeRequestDto);
+
+    UserModel toClientModel(EmployeeRequestDto employeeRequestDto);
 }
