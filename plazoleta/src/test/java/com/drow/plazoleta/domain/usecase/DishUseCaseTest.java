@@ -2,6 +2,7 @@ package com.drow.plazoleta.domain.usecase;
 
 import com.drow.plazoleta.domain.model.CategoryModel;
 import com.drow.plazoleta.domain.model.DishModel;
+import com.drow.plazoleta.domain.model.ModifyDishModel;
 import com.drow.plazoleta.domain.model.RestaurantModel;
 import com.drow.plazoleta.domain.spi.ICategoryPersistencePort;
 import com.drow.plazoleta.domain.spi.IDishPersistencePort;
@@ -82,6 +83,79 @@ class DishUseCaseTest {
     @Test
     void saveDish_ShouldThrowExceptionWhenRestaurantAndCategoryNotFound() {
         verify(dishPersistencePort, times(0)).saveDish(any(DishEntity.class));
+    }
+
+    @Test
+    void modifyDish_shouldUpdatePriceAndDescription() {
+        // Arrange
+        ModifyDishModel modifyDishModel = new ModifyDishModel();
+        modifyDishModel.setId(1);
+        modifyDishModel.setPrice(100F);
+        modifyDishModel.setDescription("New Description");
+
+        DishEntity dishEntity = new DishEntity();
+        dishEntity.setId(1);
+        dishEntity.setPrice(50F);
+        dishEntity.setDescription("Old Description");
+
+        when(dishPersistencePort.getDishById(1)).thenReturn(dishEntity);
+
+        // Act
+        dishUseCase.modifyDish(modifyDishModel);
+
+        // Assert
+        verify(dishPersistencePort).getDishById(1);
+        verify(dishPersistencePort).saveDish(dishEntity);
+        assertEquals(100F, dishEntity.getPrice());
+        assertEquals("New Description", dishEntity.getDescription());
+    }
+
+    @Test
+    void modifyDish_shouldNotUpdatePriceIfNull() {
+        // Arrange
+        ModifyDishModel modifyDishModel = new ModifyDishModel();
+        modifyDishModel.setId(1);
+        modifyDishModel.setDescription("New Description");
+
+        DishEntity dishEntity = new DishEntity();
+        dishEntity.setId(1);
+        dishEntity.setPrice(50F);
+        dishEntity.setDescription("Old Description");
+
+        when(dishPersistencePort.getDishById(1)).thenReturn(dishEntity);
+
+        // Act
+        dishUseCase.modifyDish(modifyDishModel);
+
+        // Assert
+        verify(dishPersistencePort).getDishById(1);
+        verify(dishPersistencePort).saveDish(dishEntity);
+        assertEquals(50F, dishEntity.getPrice()); // Price should remain unchanged
+        assertEquals("New Description", dishEntity.getDescription());
+    }
+
+    @Test
+    void modifyDish_shouldNotUpdateDescriptionIfNull() {
+        // Arrange
+        ModifyDishModel modifyDishModel = new ModifyDishModel();
+        modifyDishModel.setId(1);
+        modifyDishModel.setPrice(100F);
+
+        DishEntity dishEntity = new DishEntity();
+        dishEntity.setId(1);
+        dishEntity.setPrice(50F);
+        dishEntity.setDescription("Old Description");
+
+        when(dishPersistencePort.getDishById(1)).thenReturn(dishEntity);
+
+        // Act
+        dishUseCase.modifyDish(modifyDishModel);
+
+        // Assert
+        verify(dishPersistencePort).getDishById(1);
+        verify(dishPersistencePort).saveDish(dishEntity);
+        assertEquals(100F, dishEntity.getPrice());
+        assertEquals("Old Description", dishEntity.getDescription()); // Description should remain unchanged
     }
 
 }
