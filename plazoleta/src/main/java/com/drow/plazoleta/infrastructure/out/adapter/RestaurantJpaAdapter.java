@@ -7,6 +7,8 @@ import com.drow.plazoleta.infrastructure.out.entity.RestaurantEntity;
 import com.drow.plazoleta.infrastructure.out.mapper.IRestaurantEntityMapper;
 import com.drow.plazoleta.infrastructure.out.repository.IRestaurantRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
 public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
@@ -30,5 +32,10 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
         return restaurantRepository.findById(restaurantNit)
                 .map(restaurantEntityMapper::toModel)
                 .orElseThrow(() -> new RestaurantDoesntExist("Restaurant not found"));
+    }
+
+    @Override
+    public Page<RestaurantModel> findAll(Pageable page) {
+        return restaurantRepository.findAll(page).map(restaurantEntityMapper::toModel);
     }
 }

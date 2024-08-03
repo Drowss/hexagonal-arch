@@ -1,6 +1,7 @@
 package com.drow.plazoleta.application.mapper;
 
 import com.drow.plazoleta.application.dto.request.RestaurantRequestDto;
+import com.drow.plazoleta.application.dto.response.RestaurantResponseDto;
 import com.drow.plazoleta.domain.model.RestaurantModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -10,4 +11,5 @@ import org.mapstruct.ReportingPolicy;
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IRestaurantRequestMapper {
     RestaurantModel toRestaurant(RestaurantRequestDto restaurantRequestDto);
+    RestaurantResponseDto toRestaurantResponseDto(RestaurantModel restaurantModel);
 }
