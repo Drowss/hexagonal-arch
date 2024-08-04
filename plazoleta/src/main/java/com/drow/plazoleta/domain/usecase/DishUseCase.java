@@ -1,13 +1,11 @@
 package com.drow.plazoleta.domain.usecase;
 
+import com.drow.plazoleta.application.dto.response.DishResponseDto;
 import com.drow.plazoleta.application.exception.UserNoPermissions;
 import com.drow.plazoleta.application.jwt.JwtHandler;
 import com.drow.plazoleta.application.mapper.IDishRequestMapper;
 import com.drow.plazoleta.domain.api.IDishServicePort;
-import com.drow.plazoleta.domain.model.CategoryModel;
-import com.drow.plazoleta.domain.model.DishModel;
-import com.drow.plazoleta.domain.model.ModifyDishModel;
-import com.drow.plazoleta.domain.model.RestaurantModel;
+import com.drow.plazoleta.domain.model.*;
 import com.drow.plazoleta.domain.spi.ICategoryPersistencePort;
 import com.drow.plazoleta.domain.spi.IDishPersistencePort;
 import com.drow.plazoleta.domain.spi.IRestaurantPersistencePort;
@@ -16,8 +14,11 @@ import com.drow.plazoleta.infrastructure.out.mapper.ICategoryEntityMapper;
 import com.drow.plazoleta.infrastructure.out.mapper.IDishEntityMapper;
 import com.drow.plazoleta.infrastructure.out.mapper.IRestaurantEntityMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class DishUseCase implements IDishServicePort {
@@ -52,12 +53,24 @@ public class DishUseCase implements IDishServicePort {
     public void toggleDish(Integer id, String token) {
         DishEntity dishEntity = dishPersistencePort.getDishById(id);
         RestaurantModel restaurantModel = restaurantPersistencePort.getRestaurantByNit(dishEntity.getRestaurant().getNit());
-        System.out.println("llego");
         if (Integer.parseInt(restaurantModel.getCedulaPropietario()) == jwtHandler.getCedulaFromToken(token)) {
             dishEntity.setActive(!dishEntity.getActive());
             dishPersistencePort.saveDish(dishEntity);
         } else {
             throw new UserNoPermissions("No tienes permisos para realizar esta acción");
         }
+    }
+
+    @Override
+    public Page<DishDomain> getDishesRestaurant(String nit, int page, int size, Integer categoryId) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("category").ascending());
+        Page<DishDomain> dishesPage = dishPersistencePort.getDishesRestaurant(nit, pageable);
+        if (categoryId != null) {
+            List<DishDomain> filteredDishes = dishesPage.stream()
+                    .filter(dishDomain -> dishDomain.getCategory().getId().equals(categoryId))
+                    .toList();
+            return new PageImpl<>(filteredDishes, pageable, filteredDishes.size());
+        }
+        return dishPersistencePort.getDishesRestaurant(nit, pageable);
     }
 }

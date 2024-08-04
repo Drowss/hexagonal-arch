@@ -2,6 +2,8 @@ package com.drow.plazoleta.application.mapper;
 
 import com.drow.plazoleta.application.dto.request.DishRequestDto;
 import com.drow.plazoleta.application.dto.request.ModifyDishRequestDto;
+import com.drow.plazoleta.application.dto.response.DishResponseDto;
+import com.drow.plazoleta.domain.model.DishDomain;
 import com.drow.plazoleta.domain.model.DishModel;
 import com.drow.plazoleta.domain.model.ModifyDishModel;
 import com.drow.plazoleta.infrastructure.out.entity.DishEntity;
@@ -15,4 +17,6 @@ public interface IDishRequestMapper {
     DishModel toDish(DishRequestDto dishRequestDto);
 
     ModifyDishModel toModifyDish(ModifyDishRequestDto modifyDishRequestDto);
+
+    DishResponseDto toDishResponseDto(DishDomain dishDomain);
 }

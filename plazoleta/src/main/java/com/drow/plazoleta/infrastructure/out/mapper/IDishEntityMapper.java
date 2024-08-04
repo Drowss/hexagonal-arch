@@ -1,5 +1,6 @@
 package com.drow.plazoleta.infrastructure.out.mapper;
 
+import com.drow.plazoleta.domain.model.DishDomain;
 import com.drow.plazoleta.domain.model.DishModel;
 import com.drow.plazoleta.domain.model.RestaurantModel;
 import com.drow.plazoleta.infrastructure.out.entity.DishEntity;
@@ -13,4 +14,6 @@ import org.mapstruct.ReportingPolicy;
 public interface IDishEntityMapper {
     DishEntity toEntity(DishModel dishModel);
     DishModel toModel(DishEntity dishEntity);
+
+    DishDomain toDomain(DishEntity dishEntity);
 }
