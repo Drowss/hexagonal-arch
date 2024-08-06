@@ -1,9 +1,7 @@
 package com.drow.plazoleta.domain.usecase;
 
-import com.drow.plazoleta.application.dto.response.DishResponseDto;
 import com.drow.plazoleta.application.exception.UserNoPermissions;
-import com.drow.plazoleta.application.jwt.JwtHandler;
-import com.drow.plazoleta.application.mapper.IDishRequestMapper;
+import com.drow.plazoleta.infrastructure.out.jwt.JwtHandler;
 import com.drow.plazoleta.domain.api.IDishServicePort;
 import com.drow.plazoleta.domain.model.*;
 import com.drow.plazoleta.domain.spi.ICategoryPersistencePort;
@@ -18,7 +16,6 @@ import org.springframework.data.domain.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class DishUseCase implements IDishServicePort {

@@ -1,23 +1,29 @@
 package com.drow.plazoleta.infrastructure.configuration;
 
-import com.drow.plazoleta.application.jwt.JwtHandler;
+import com.drow.plazoleta.infrastructure.out.jwt.JwtHandler;
 import com.drow.plazoleta.domain.api.ICategoryServicePort;
 import com.drow.plazoleta.domain.api.IDishServicePort;
+import com.drow.plazoleta.domain.api.IOrderServicePort;
 import com.drow.plazoleta.domain.api.IRestaurantServicePort;
 import com.drow.plazoleta.domain.spi.ICategoryPersistencePort;
 import com.drow.plazoleta.domain.spi.IDishPersistencePort;
+import com.drow.plazoleta.domain.spi.IOrderPersistencePort;
 import com.drow.plazoleta.domain.spi.IRestaurantPersistencePort;
 import com.drow.plazoleta.domain.usecase.CategoryUseCase;
 import com.drow.plazoleta.domain.usecase.DishUseCase;
+import com.drow.plazoleta.domain.usecase.OrderUseCase;
 import com.drow.plazoleta.domain.usecase.RestaurantUseCase;
 import com.drow.plazoleta.infrastructure.out.adapter.CategoryJpaAdapter;
 import com.drow.plazoleta.infrastructure.out.adapter.DishJpaAdapter;
+import com.drow.plazoleta.infrastructure.out.adapter.OrderJpaAdapter;
 import com.drow.plazoleta.infrastructure.out.adapter.RestaurantJpaAdapter;
 import com.drow.plazoleta.infrastructure.out.mapper.ICategoryEntityMapper;
 import com.drow.plazoleta.infrastructure.out.mapper.IDishEntityMapper;
+import com.drow.plazoleta.infrastructure.out.mapper.IOrderEntityMapper;
 import com.drow.plazoleta.infrastructure.out.mapper.IRestaurantEntityMapper;
 import com.drow.plazoleta.infrastructure.out.repository.ICategoryRepository;
 import com.drow.plazoleta.infrastructure.out.repository.IDishRepository;
+import com.drow.plazoleta.infrastructure.out.repository.IOrderRepository;
 import com.drow.plazoleta.infrastructure.out.repository.IRestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +40,8 @@ public class BeanConfiguration {
     private final IDishRepository dishRepository;
     private final IDishEntityMapper dishEntityMapper;
     private final JwtHandler jwtHandler;
+    private final IOrderRepository orderRepository;
+    private final IOrderEntityMapper orderEntityMapper;
 
     @Bean
     public IRestaurantServicePort restaurantServicePort() {
@@ -69,5 +77,15 @@ public class BeanConfiguration {
     @Bean
     public IDishPersistencePort dishPersistencePort() {
         return new DishJpaAdapter(dishRepository, dishEntityMapper);
+    }
+
+    @Bean
+    public IOrderServicePort orderServicePort() {
+        return new OrderUseCase(orderPersistencePort(), jwtHandler, restaurantPersistencePort());
+    }
+
+    @Bean
+    public IOrderPersistencePort orderPersistencePort() {
+        return new OrderJpaAdapter(orderRepository, orderEntityMapper, restaurantEntityMapper);
     }
 }
