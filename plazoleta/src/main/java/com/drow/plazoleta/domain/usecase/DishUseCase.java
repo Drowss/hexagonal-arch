@@ -1,7 +1,7 @@
 package com.drow.plazoleta.domain.usecase;
 
 import com.drow.plazoleta.application.exception.UserNoPermissions;
-import com.drow.plazoleta.infrastructure.out.jwt.JwtHandler;
+import com.drow.plazoleta.domain.spi.IJwtHandler;
 import com.drow.plazoleta.domain.api.IDishServicePort;
 import com.drow.plazoleta.domain.model.*;
 import com.drow.plazoleta.domain.spi.ICategoryPersistencePort;
@@ -26,7 +26,7 @@ public class DishUseCase implements IDishServicePort {
     private final ICategoryEntityMapper categoryEntityMapper;
     private final IRestaurantEntityMapper restaurantEntityMapper;
     private final IDishEntityMapper dishEntityMapper;
-    private final JwtHandler jwtHandler;
+    private final IJwtHandler jwtHandler;
 
     @Override
     public void saveDish(DishModel dishModel) {

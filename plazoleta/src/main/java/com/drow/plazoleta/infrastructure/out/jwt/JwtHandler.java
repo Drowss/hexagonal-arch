@@ -1,5 +1,6 @@
 package com.drow.plazoleta.infrastructure.out.jwt;
 
+import com.drow.plazoleta.domain.spi.IJwtHandler;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -14,7 +15,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtHandler {
+public class JwtHandler implements IJwtHandler {
 
     @Value("${JWT_SECRET}")
     private String jwtSecret;

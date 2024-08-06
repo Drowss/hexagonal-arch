@@ -4,21 +4,20 @@ import com.drow.plazoleta.domain.exception.PendingOrderException;
 import com.drow.plazoleta.domain.model.OrderModel;
 import com.drow.plazoleta.domain.model.RestaurantModel;
 import com.drow.plazoleta.domain.model.enums.OrderStatus;
+import com.drow.plazoleta.domain.spi.IJwtHandler;
 import com.drow.plazoleta.domain.spi.IRestaurantPersistencePort;
-import com.drow.plazoleta.infrastructure.out.jwt.JwtHandler;
 import com.drow.plazoleta.domain.api.IOrderServicePort;
 import com.drow.plazoleta.domain.spi.IOrderPersistencePort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RequiredArgsConstructor
 public class OrderUseCase implements IOrderServicePort {
 
     private final IOrderPersistencePort orderPersistencePort;
-    private final JwtHandler jwtHandler;
+    private final IJwtHandler jwtHandler;
     private final IRestaurantPersistencePort restaurantPersistencePort;
 
     @Override
