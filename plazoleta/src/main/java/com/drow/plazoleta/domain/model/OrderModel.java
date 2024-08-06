@@ -12,9 +12,9 @@ public class OrderModel {
 
     private OrderStatus status;
 
-    private List<OrderItemEntity> items;
+    private List<OrderItemModel> items;
 
-    public OrderModel(Integer id, RestaurantModel restaurant, Integer userId, OrderStatus status, List<OrderItemEntity> items) {
+    public OrderModel(Integer id, RestaurantModel restaurant, Integer userId, OrderStatus status, List<OrderItemModel> items) {
         this.id = id;
         this.restaurant = restaurant;
         this.userId = userId;
@@ -57,11 +57,11 @@ public class OrderModel {
         this.status = status;
     }
 
-    public List<OrderItemEntity> getItems() {
+    public List<OrderItemModel> getItems() {
         return items;
     }
 
-    public void setItems(List<OrderItemEntity> items) {
+    public void setItems(List<OrderItemModel> items) {
         this.items = items;
     }
 }
