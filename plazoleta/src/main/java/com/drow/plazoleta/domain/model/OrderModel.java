@@ -1,6 +1,5 @@
 package com.drow.plazoleta.domain.model;
 
-import com.drow.plazoleta.infrastructure.out.entity.OrderItemEntity;
 import com.drow.plazoleta.domain.model.enums.OrderStatus;
 
 import java.util.List;

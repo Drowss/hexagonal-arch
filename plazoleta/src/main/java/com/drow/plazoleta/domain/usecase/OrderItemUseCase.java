@@ -12,13 +12,13 @@ public class OrderItemUseCase implements IOrderItemServicePort {
 
     @Override
     public void saveOrderDishDetail(OrderItemModel orderItemModel) {
-//        if (Boolean.TRUE.equals(orderItemPersistencePort.existsByOrderIdAndDishId(orderItemModel.getOrder().getId(), orderItemModel.getDish().getId()))) {
-//            System.out.println("Entra");
-//            OrderItemModel orderItem = orderItemPersistencePort.findByOrderIdAndDishId(orderItemModel.getOrder().getId(), orderItemModel.getDish().getId());
-//            orderItem.setQuantity(orderItemModel.getQuantity());
-//            orderItemPersistencePort.save(orderItem);
-//            return;
-//        }
+        if (Boolean.TRUE.equals(orderItemPersistencePort.existsByOrderIdAndDishId(orderItemModel.getOrder().getId(), orderItemModel.getDish().getId()))) {
+            OrderItemModel orderItem = orderItemPersistencePort.findByOrderIdAndDishId(orderItemModel.getOrder().getId(), orderItemModel.getDish().getId());
+            orderItem.setOrder(orderItemModel.getOrder());
+            orderItem.setQuantity(orderItemModel.getQuantity());
+            orderItemPersistencePort.save(orderItem);
+            return;
+        }
         orderItemPersistencePort.save(orderItemModel);
     }
 }
