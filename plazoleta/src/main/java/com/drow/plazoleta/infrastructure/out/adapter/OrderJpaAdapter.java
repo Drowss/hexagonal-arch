@@ -29,5 +29,10 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
         return orderRepository.findAllByUserIdAndRestaurant(cedula, restaurantEntity).stream().map(orderMapper::toModel).toList();
     }
 
+    @Override
+    public OrderModel findById(Integer id) {
+        return orderMapper.toModel(orderRepository.findById(id).orElse(null));
+    }
+
 
 }

@@ -1,6 +1,5 @@
 package com.drow.plazoleta.application.handler.imp;
 
-import com.drow.plazoleta.application.dto.request.OrderRequestDto;
 import com.drow.plazoleta.application.handler.IOrderHandler;
 import com.drow.plazoleta.domain.api.IOrderServicePort;
 import lombok.RequiredArgsConstructor;

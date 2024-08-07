@@ -1,6 +1,7 @@
 package com.drow.plazoleta.domain.model;
 
 public class DishDomain {
+    private Integer id;
     private String name;
     private Float price;
     private Boolean active;
@@ -20,6 +21,14 @@ public class DishDomain {
     }
 
     public DishDomain() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
