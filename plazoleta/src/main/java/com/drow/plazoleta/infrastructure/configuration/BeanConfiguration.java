@@ -74,7 +74,7 @@ public class BeanConfiguration {
 
     @Bean
     public IOrderServicePort orderServicePort() {
-        return new OrderUseCase(orderPersistencePort(), jwtHandler, restaurantPersistencePort());
+        return new OrderUseCase(orderPersistencePort(), jwtHandler, restaurantPersistencePort(), orderItemPersistencePort());
     }
 
     @Bean

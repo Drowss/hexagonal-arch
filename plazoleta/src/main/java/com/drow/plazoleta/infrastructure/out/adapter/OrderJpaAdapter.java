@@ -1,13 +1,17 @@
 package com.drow.plazoleta.infrastructure.out.adapter;
 
+import com.drow.plazoleta.domain.model.OrderItemModel;
 import com.drow.plazoleta.domain.model.OrderModel;
 import com.drow.plazoleta.domain.model.RestaurantModel;
+import com.drow.plazoleta.domain.model.enums.OrderStatus;
 import com.drow.plazoleta.domain.spi.IOrderPersistencePort;
+import com.drow.plazoleta.infrastructure.out.entity.OrderEntity;
 import com.drow.plazoleta.infrastructure.out.entity.RestaurantEntity;
 import com.drow.plazoleta.infrastructure.out.mapper.IOrderEntityMapper;
 import com.drow.plazoleta.infrastructure.out.mapper.IRestaurantEntityMapper;
 import com.drow.plazoleta.infrastructure.out.repository.IOrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -34,5 +38,9 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
         return orderMapper.toModel(orderRepository.findById(id).orElse(null));
     }
 
-
+    @Override
+    public List<OrderModel> findAllByUserIdAndStatus(OrderStatus orderStatus, Integer cedula, Pageable pageable) {
+        List<OrderEntity> orderEntityList = orderRepository.findAllByStatusAndUserId(orderStatus, cedula, pageable).toList();
+        return orderEntityList.stream().map(orderMapper::toModelList).toList();
+    }
 }
