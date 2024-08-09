@@ -22,4 +22,6 @@ public class OrderResponseDto {
     private OrderStatus status;
 
     private List<OrderItemResponseDto> items;
+
+    private Integer employee;
 }

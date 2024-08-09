@@ -1,6 +1,7 @@
 package com.drow.plazoleta.domain.usecase;
 
 import com.drow.plazoleta.domain.exception.PendingOrderException;
+import com.drow.plazoleta.domain.model.OrderItemModel;
 import com.drow.plazoleta.domain.model.OrderModel;
 import com.drow.plazoleta.domain.model.RestaurantModel;
 import com.drow.plazoleta.domain.model.enums.OrderStatus;
@@ -48,6 +49,25 @@ public class OrderUseCase implements IOrderServicePort {
     public Page<OrderModel> findAllByStatus(String token, int page, int size, String status) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
         Integer cedula = jwtHandler.getCedulaFromToken(token);
+        List<OrderModel> orderModelList = orderPersistencePort.findAllByUserIdAndStatus(OrderStatus.valueOf(status), cedula, pageable);
+        for (OrderModel orderModel : orderModelList) {
+            orderModel.setItems(orderItemPersistencePort.findAllByOrderId(orderModel.getId()));
+        }
+        return new PageImpl<>(orderModelList, pageable, orderModelList.size());
+    }
+
+    @Override
+    public Page<OrderModel> assignEmployeeToOrder(String token, Integer orderId, int page, int size, String status) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        Integer cedula = jwtHandler.getCedulaFromToken(token);
+        OrderModel orderModelEmployee = orderPersistencePort.findByIdIgnoreCycle(orderId);
+        orderModelEmployee.setEmployee(cedula);
+        orderModelEmployee.setItems(orderItemPersistencePort.findAllByOrderId(orderModelEmployee.getId()));
+        orderModelEmployee.setStatus(OrderStatus.valueOf(status));
+        for (OrderItemModel orderItemModel : orderModelEmployee.getItems()) {
+            orderItemModel.setOrder(orderPersistencePort.findByIdIgnoreCycle(orderModelEmployee.getId()));
+        }
+        orderPersistencePort.saveOrder(orderModelEmployee);
         List<OrderModel> orderModelList = orderPersistencePort.findAllByUserIdAndStatus(OrderStatus.valueOf(status), cedula, pageable);
         for (OrderModel orderModel : orderModelList) {
             orderModel.setItems(orderItemPersistencePort.findAllByOrderId(orderModel.getId()));

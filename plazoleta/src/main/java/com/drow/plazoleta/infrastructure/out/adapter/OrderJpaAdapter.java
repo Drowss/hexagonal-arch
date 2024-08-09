@@ -39,8 +39,15 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
+    public OrderModel findByIdIgnoreCycle(Integer id) {
+        return orderMapper.toModelList(orderRepository.findById(id).orElse(null));
+    }
+
+    @Override
     public List<OrderModel> findAllByUserIdAndStatus(OrderStatus orderStatus, Integer cedula, Pageable pageable) {
         List<OrderEntity> orderEntityList = orderRepository.findAllByStatusAndUserId(orderStatus, cedula, pageable).toList();
         return orderEntityList.stream().map(orderMapper::toModelList).toList();
     }
+
+
 }

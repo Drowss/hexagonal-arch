@@ -30,4 +30,7 @@ public class OrderEntity {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItemEntity> items;
+
+    @JoinColumn(name = "employee_id")
+    private Integer employee;
 }

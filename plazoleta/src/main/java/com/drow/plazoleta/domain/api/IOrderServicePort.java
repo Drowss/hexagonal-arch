@@ -8,4 +8,6 @@ public interface IOrderServicePort {
     void saveOrder(String token, String restaurantNit);
 
     Page<OrderModel> findAllByStatus(String token, int page, int size, String status);
+
+    Page<OrderModel> assignEmployeeToOrder(String token, Integer orderId, int page, int size, String status);
 }

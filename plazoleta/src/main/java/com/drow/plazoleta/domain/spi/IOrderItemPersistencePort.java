@@ -11,4 +11,6 @@ public interface IOrderItemPersistencePort {
     OrderItemModel findByOrderIdAndDishId(Integer id, Integer id1);
 
     List<OrderItemModel> findAllByOrderId(Integer id);
+
+    OrderItemModel findById(Integer id);
 }

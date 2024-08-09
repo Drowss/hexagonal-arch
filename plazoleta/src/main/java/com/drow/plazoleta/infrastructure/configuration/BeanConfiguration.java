@@ -38,7 +38,7 @@ public class BeanConfiguration {
 
     @Bean
     public IOrderItemServicePort orderItemServicePort() {
-        return new OrderItemUseCase(orderItemPersistencePort());
+        return new OrderItemUseCase(orderItemPersistencePort(), dishPersistencePort(), orderPersistencePort());
     }
 
     @Bean

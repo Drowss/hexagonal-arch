@@ -13,5 +13,9 @@ public interface IOrderPersistencePort {
     List<OrderModel> findOrderEntityByUserIdAndRestaurant(Integer cedula, RestaurantModel restaurant);
     OrderModel findById(Integer id);
 
+    OrderModel findByIdIgnoreCycle(Integer id);
+
     List<OrderModel> findAllByUserIdAndStatus(OrderStatus orderStatus, Integer cedula, Pageable pageable);
+
+
 }

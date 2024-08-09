@@ -13,12 +13,15 @@ public class OrderModel {
 
     private List<OrderItemModel> items;
 
-    public OrderModel(Integer id, RestaurantModel restaurant, Integer userId, OrderStatus status, List<OrderItemModel> items) {
+    private Integer employee;
+
+    public OrderModel(Integer id, RestaurantModel restaurant, Integer userId, OrderStatus status, List<OrderItemModel> items, Integer employee) {
         this.id = id;
         this.restaurant = restaurant;
         this.userId = userId;
         this.status = status;
         this.items = items;
+        this.employee = employee;
     }
 
     public OrderModel() {
@@ -62,5 +65,13 @@ public class OrderModel {
 
     public void setItems(List<OrderItemModel> items) {
         this.items = items;
+    }
+
+    public Integer getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Integer employee) {
+        this.employee = employee;
     }
 }

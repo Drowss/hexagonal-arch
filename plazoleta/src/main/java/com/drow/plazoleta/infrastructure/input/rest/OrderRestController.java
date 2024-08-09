@@ -4,7 +4,7 @@ import com.drow.plazoleta.application.dto.request.OrderDishRequestDto;
 import com.drow.plazoleta.application.dto.response.OrderResponseDto;
 import com.drow.plazoleta.application.handler.IOrderItemHandler;
 import com.drow.plazoleta.application.handler.IOrderHandler;
-import com.drow.plazoleta.domain.model.enums.OrderStatus;
+import com.drow.plazoleta.domain.model.OrderModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -54,5 +54,18 @@ public class OrderRestController {
                                                        @RequestParam(defaultValue = "10") int size,
                                                        @RequestParam(defaultValue = "EN_PREPARACION") String status) {
         return orderHandler.findAllByStatus(token, page, size, status);
+    }
+
+    @Operation(summary = "Assign an employee to an order")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Employee assigned", content = @Content)
+    })
+    @PutMapping("/assign")
+    public Page<OrderResponseDto> assignEmployeeToOrder(@CookieValue("token") String token,
+                                                  @RequestParam Integer orderId,
+                                                  @RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "10") int size,
+                                                  @RequestParam(defaultValue = "PENDIENTE") String status) {
+        return orderHandler.assignEmployeeToOrder(token, orderId, page, size, status);
     }
 }

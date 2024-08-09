@@ -33,4 +33,9 @@ public class OrderItemJpaAdapter implements IOrderItemPersistencePort {
     public List<OrderItemModel> findAllByOrderId(Integer id) {
         return orderItemRepository.findAllByOrderId(id).stream().map(orderItemMapper::toModel).toList();
     }
+
+    @Override
+    public OrderItemModel findById(Integer id) {
+        return orderItemRepository.findById(id).map(orderItemMapper::toModel).orElse(null);
+    }
 }
