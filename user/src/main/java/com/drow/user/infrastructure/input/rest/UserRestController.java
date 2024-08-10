@@ -28,7 +28,8 @@ public class UserRestController {
     @Operation(summary = "Create a new owner")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Owner created", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Owner already exists", content = @Content)
+            @ApiResponse(responseCode = "406", description = "Owner already exists", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Owner underage forbidden", content = @Content)
     })
     @PostMapping("/save/owner")
     public ResponseEntity<Void> saveOwner(@RequestBody @Valid UserRequestDto userRequestDto) {
@@ -38,8 +39,8 @@ public class UserRestController {
 
     @Operation(summary = "Login an user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "user logged in", content = @Content),
-            @ApiResponse(responseCode = "401", description = "user not found", content = @Content)
+            @ApiResponse(responseCode = "200", description = "User logged in", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @PostMapping("/login")
     public ResponseEntity<TokenResponseDto> loginUser(@RequestBody @Valid UserLoginRequestDto userLoginRequestDto,
@@ -49,8 +50,8 @@ public class UserRestController {
 
     @Operation(summary = "Get an user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "user found", content = @Content),
-            @ApiResponse(responseCode = "404", description = "user not found", content = @Content)
+            @ApiResponse(responseCode = "200", description = "User found", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @GetMapping("/getByCorreo")
     public ResponseEntity<UserResponseDto> getUserByCorreo(@RequestParam String correo) {
@@ -60,7 +61,7 @@ public class UserRestController {
     @Operation(summary = "Create an employee")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Employee saved", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Employee already exists", content = @Content)
+            @ApiResponse(responseCode = "406", description = "Employee already exists", content = @Content)
     })
     @PostMapping("/save/employee")
     public ResponseEntity<Void> saveEmployee(@RequestBody @Valid EmployeeRequestDto employeeRequestDto) {
@@ -70,8 +71,8 @@ public class UserRestController {
 
     @Operation(summary = "Client sign up")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Employee saved", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Employee already exists", content = @Content)
+            @ApiResponse(responseCode = "200", description = "Client saved", content = @Content),
+            @ApiResponse(responseCode = "406", description = "Client already exists", content = @Content)
     })
     @PostMapping("/save/client")
     public ResponseEntity<Void> saveClient(@RequestBody @Valid EmployeeRequestDto employeeRequestDto) {

@@ -36,7 +36,8 @@ public class OrderRestController {
 
     @Operation(summary = "Add a new detail to the order")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "detail created", content = @Content)
+            @ApiResponse(responseCode = "201", description = "detail created", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Dish not own to this restaurant", content = @Content)
     })
     @PostMapping("/detail")
     public ResponseEntity<Void> saveOrderDetail(@RequestBody @Valid OrderDishRequestDto orderRequestDto) {

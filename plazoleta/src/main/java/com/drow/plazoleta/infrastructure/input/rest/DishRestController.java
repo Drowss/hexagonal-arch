@@ -36,7 +36,8 @@ public class DishRestController {
 
     @Operation(summary = "Modify a dish")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Dish modified", content = @Content)
+            @ApiResponse(responseCode = "202", description = "Dish modified", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Dish not found", content = @Content)
     })
     @PutMapping("/modify")
     public ResponseEntity<Void> modifyDish(@RequestBody @Valid ModifyDishRequestDto modifyDishRequestDto) {
@@ -46,7 +47,8 @@ public class DishRestController {
 
     @Operation(summary = "Toggle a dish")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Dish toggled successfully", content = @Content)
+            @ApiResponse(responseCode = "200", description = "Dish toggled successfully", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Dish not found", content = @Content)
     })
     @PutMapping("/toggle")
     public ResponseEntity<Void> toggleDish(@RequestParam Integer id, @CookieValue("token") String token) {
