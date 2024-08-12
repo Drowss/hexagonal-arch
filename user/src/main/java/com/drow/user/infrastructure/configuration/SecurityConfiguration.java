@@ -26,8 +26,8 @@ public class SecurityConfiguration {
                     .requestMatchers("/api/v1/user/save/owner").hasRole("PROPIETARIO")
                     .requestMatchers("/api/v1/user/save/employee").hasRole("EMPLEADO")
                     .requestMatchers("/api/v1/user/save/client").permitAll()
-                    .requestMatchers("/api/v1/user/getByCorreo").authenticated()
-                    .anyRequest().authenticated()
+                    .anyRequest()
+                    .permitAll()
             )
             .addFilterBefore(cookieAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

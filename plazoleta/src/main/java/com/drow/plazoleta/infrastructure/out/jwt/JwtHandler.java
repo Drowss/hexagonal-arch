@@ -36,7 +36,7 @@ public class JwtHandler implements IJwtHandler {
     }
 
     public boolean isTokenValid(String token) {
-        return getClaimFromToken(token, Claims::getExpiration).before(new Date());
+        return getClaimFromToken(token, Claims::getExpiration).after(new Date());
     }
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
