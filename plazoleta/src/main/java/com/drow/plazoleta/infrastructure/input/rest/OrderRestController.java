@@ -4,7 +4,6 @@ import com.drow.plazoleta.application.dto.request.OrderDishRequestDto;
 import com.drow.plazoleta.application.dto.response.OrderResponseDto;
 import com.drow.plazoleta.application.handler.IOrderItemHandler;
 import com.drow.plazoleta.application.handler.IOrderHandler;
-import com.drow.plazoleta.domain.model.OrderModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -41,4 +41,9 @@ public class BeanConfiguration {
     public IUserPasswordEncrypter userPasswordEncrypter() {
         return new UserPasswordEncrypter(encoder());
     }
+
+    @Bean
+    public UserJpaAdapter userJpaAdapter() {
+        return new UserJpaAdapter(userRepository, userEntityMapper);
+    }
 }
