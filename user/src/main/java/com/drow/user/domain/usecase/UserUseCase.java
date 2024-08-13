@@ -27,11 +27,11 @@ public class UserUseCase implements IUserServicePort {
     private final IUserEntityMapper userEntityMapper;
 
     @Override
-    public void saveUser(UserModel userModel) {
+    public UserModel saveUser(UserModel userModel) {
         if (Boolean.TRUE.equals(userPersistencePort.userExists(userModel.getDocumentoDeIdentidad())))
             throw new UserAlreadyExists("El usuario ya existe");
         userModel.setClave(userPasswordEncrypter.encryptPassword(userModel.getClave()));
-        userPersistencePort.saveUser(userModel);
+        return userPersistencePort.saveUser(userModel);
     }
 
     @Override

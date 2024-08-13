@@ -6,7 +6,10 @@ import com.drow.user.application.dto.request.UserRequestDto;
 import com.drow.user.application.dto.response.TokenResponseDto;
 import com.drow.user.application.dto.response.UserResponseDto;
 import com.drow.user.application.exception.UserUnderageException;
+import com.drow.user.application.feign.PlazoletaFeignClient;
+import com.drow.user.application.feign.dto.RestaurantEmployeeRequestDto;
 import com.drow.user.application.handler.IUserHandler;
+import com.drow.user.application.jwt.IJwtHandler;
 import com.drow.user.application.mapper.IUserRequestMapper;
 import com.drow.user.application.mapper.IUserResponseMapper;
 import com.drow.user.domain.api.IUserServicePort;
@@ -29,6 +32,8 @@ public class UserHandler implements IUserHandler {
     private final IUserServicePort userServicePort;
     private final IUserRequestMapper userRequestMapper;
     private final IUserResponseMapper userResponseMapper;
+    private final PlazoletaFeignClient plazoletaFeignClient;
+    private final IJwtHandler jwtHandler;
 
     @Override
     public void saveUser(UserRequestDto userRequestDto) {
@@ -51,10 +56,13 @@ public class UserHandler implements IUserHandler {
     }
 
     @Override
-    public void saveEmployee(EmployeeRequestDto employeeRequestDto) {
+    public void saveEmployee(EmployeeRequestDto employeeRequestDto, String token) {
         UserModel userModel = userRequestMapper.toEmployeeModel(employeeRequestDto);
         userModel.setRol(Rol.EMPLEADO);
-        userServicePort.saveUser(userModel);
+        UserModel user = userServicePort.saveUser(userModel);
+        RestaurantEmployeeRequestDto restaurantEmployeeRequestDto = new RestaurantEmployeeRequestDto();
+        restaurantEmployeeRequestDto.setEmployeeId(user.getDocumentoDeIdentidad());
+        plazoletaFeignClient.saveRestaurantEmployee(restaurantEmployeeRequestDto);
     }
 
     @Override

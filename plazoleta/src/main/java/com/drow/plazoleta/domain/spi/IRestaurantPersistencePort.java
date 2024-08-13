@@ -12,4 +12,6 @@ public interface IRestaurantPersistencePort {
     RestaurantModel getRestaurantByNit(String restaurantNit);
 
     Page<RestaurantModel> findAll(Pageable page);
+
+    RestaurantModel findByCedula(String ownerDni);
 }

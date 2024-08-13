@@ -38,4 +38,10 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
     public Page<RestaurantModel> findAll(Pageable page) {
         return restaurantRepository.findAll(page).map(restaurantEntityMapper::toModel);
     }
+
+    @Override
+    public RestaurantModel findByCedula(String ownerDni) {
+        RestaurantEntity restaurantEntity = restaurantRepository.findByCedulaPropietario(ownerDni);
+        return restaurantEntityMapper.toModel(restaurantEntity);
+    }
 }

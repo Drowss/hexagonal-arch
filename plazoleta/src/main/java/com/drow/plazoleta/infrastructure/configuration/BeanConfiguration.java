@@ -30,6 +30,8 @@ public class BeanConfiguration {
     private final IOrderItemRepository orderItemRepository;
     private final IOrderItemEntityMapper orderItemMapper;
     private final PinUserFeignClientAdapter pinUserClientAdapter;
+    private final IRestaurantEmployeeRepository restaurantEmployeeRepository;
+    private final IRestaurantEmployeeEntityMapper restaurantEmployeeEntityMapper;
 
     @Bean
     public IRestaurantServicePort restaurantServicePort() {
@@ -90,5 +92,15 @@ public class BeanConfiguration {
     @Bean
     public PinUserFeignAdapter pinUserFeignAdapter() {
         return new PinUserFeignAdapter(pinUserClientAdapter);
+    }
+
+    @Bean
+    public IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort() {
+        return new RestaurantEmployeeJpaAdapter(restaurantEmployeeRepository, restaurantEmployeeEntityMapper);
+    }
+
+    @Bean
+    public IRestaurantEmployeeServicePort restaurantEmployeeServicePort() {
+        return new RestaurantEmployeeUseCase(restaurantEmployeePersistencePort(), restaurantPersistencePort(), jwtHandler);
     }
 }

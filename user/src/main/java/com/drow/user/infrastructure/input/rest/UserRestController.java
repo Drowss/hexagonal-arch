@@ -64,8 +64,8 @@ public class UserRestController {
             @ApiResponse(responseCode = "406", description = "Employee already exists", content = @Content)
     })
     @PostMapping("/save/employee")
-    public ResponseEntity<Void> saveEmployee(@RequestBody @Valid EmployeeRequestDto employeeRequestDto) {
-        userHandler.saveEmployee(employeeRequestDto);
+    public ResponseEntity<Void> saveEmployee(@RequestBody @Valid EmployeeRequestDto employeeRequestDto, @CookieValue("token") String token) {
+        userHandler.saveEmployee(employeeRequestDto, token);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

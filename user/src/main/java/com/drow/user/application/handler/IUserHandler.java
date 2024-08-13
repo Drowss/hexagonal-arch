@@ -15,7 +15,7 @@ public interface IUserHandler {
 
     UserResponseDto getUserByCorreo(String correo);
 
-    void saveEmployee(EmployeeRequestDto employeeRequestDto);
+    void saveEmployee(EmployeeRequestDto employeeRequestDto, String token);
 
     void saveClient(EmployeeRequestDto employeeRequestDto);
 }

@@ -6,7 +6,7 @@ import com.drow.user.domain.model.UserModel;
 import jakarta.servlet.http.HttpServletResponse;
 
 public interface IUserServicePort {
-    void saveUser(UserModel ownerModel);
+    UserModel saveUser(UserModel ownerModel);
 
     TokenResponseDto loginUser(UserLoginModel userLoginModel, HttpServletResponse response);
 
