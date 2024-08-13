@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface IDishServicePort {
-    void saveDish(DishModel dishModel);
+    void saveDish(DishModel dishModel, String token);
 
     void modifyDish(ModifyDishModel modifyDishModel);
 

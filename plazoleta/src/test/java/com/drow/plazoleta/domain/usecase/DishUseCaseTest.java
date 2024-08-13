@@ -80,7 +80,7 @@ class DishUseCaseTest {
         when(categoryEntityMapper.toEntity(categoryModel)).thenReturn(new CategoryEntity());
         when(restaurantEntityMapper.toEntity(restaurantModel)).thenReturn(new RestaurantEntity());
 
-        dishUseCase.saveDish(dishModel);
+        dishUseCase.saveDish(dishModel, "token");
 
         verify(dishPersistencePort, times(1)).saveDish(any(DishEntity.class));
     }

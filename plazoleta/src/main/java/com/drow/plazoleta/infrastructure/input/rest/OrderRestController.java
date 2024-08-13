@@ -68,4 +68,9 @@ public class OrderRestController {
                                                   @RequestParam(defaultValue = "PENDIENTE") String status) {
         return orderHandler.assignEmployeeToOrder(token, orderId, page, size, status);
     }
+
+    @PutMapping("/ready")
+    public void readyOrder(@CookieValue("token") String token, @RequestParam Integer orderId) {
+        orderHandler.readyOrder(token, orderId);
+    }
 }

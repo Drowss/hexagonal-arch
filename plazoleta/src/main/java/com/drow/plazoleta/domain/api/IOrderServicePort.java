@@ -10,4 +10,6 @@ public interface IOrderServicePort {
     Page<OrderModel> findAllByStatus(String token, int page, int size, String status);
 
     Page<OrderModel> assignEmployeeToOrder(String token, Integer orderId, int page, int size, String status);
+
+    void readyOrder(String token, Integer orderId);
 }

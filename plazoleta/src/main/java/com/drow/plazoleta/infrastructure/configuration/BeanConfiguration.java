@@ -27,6 +27,8 @@ public class BeanConfiguration {
     private final IOrderEntityMapper orderEntityMapper;
     private final IOrderItemRepository orderItemRepository;
     private final IOrderItemEntityMapper orderItemMapper;
+    private final IPinUserRepository pinUserRepository;
+    private final IPinUserEntityMapper pinUserEntityMapper;
 
     @Bean
     public IRestaurantServicePort restaurantServicePort() {
@@ -76,7 +78,12 @@ public class BeanConfiguration {
 
     @Bean
     public IOrderServicePort orderServicePort() {
-        return new OrderUseCase(orderPersistencePort(), jwtHandler, restaurantPersistencePort(), orderItemPersistencePort());
+        return new OrderUseCase(orderPersistencePort(), jwtHandler, restaurantPersistencePort(), orderItemPersistencePort(), userPinPersistencePort());
+    }
+
+    @Bean
+    public IUserPinPersistencePort userPinPersistencePort() {
+        return new UserPinJpaAdapter(pinUserRepository, pinUserEntityMapper);
     }
 
     @Bean

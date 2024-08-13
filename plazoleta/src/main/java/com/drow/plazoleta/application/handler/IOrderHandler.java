@@ -10,4 +10,6 @@ public interface IOrderHandler {
     Page<OrderResponseDto> findAllByStatus(String token, int page, int size, String status);
 
     Page<OrderResponseDto> assignEmployeeToOrder(String token, Integer orderId, int page, int size, String status);
+
+    void readyOrder(String token, Integer orderId);
 }

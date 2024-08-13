@@ -29,8 +29,8 @@ public class DishRestController {
             @ApiResponse(responseCode = "201", description = "Dish created", content = @Content)
     })
     @PostMapping("/save")
-    public ResponseEntity<Void> saveDish(@RequestBody @Valid DishRequestDto dishRequestDto) {
-        dishHandler.saveDish(dishRequestDto);
+    public ResponseEntity<Void> saveDish(@RequestBody @Valid DishRequestDto dishRequestDto, @CookieValue String token) {
+        dishHandler.saveDish(dishRequestDto, token);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

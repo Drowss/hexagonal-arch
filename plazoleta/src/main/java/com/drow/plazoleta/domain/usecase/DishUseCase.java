@@ -29,9 +29,12 @@ public class DishUseCase implements IDishServicePort {
     private final IJwtHandler jwtHandler;
 
     @Override
-    public void saveDish(DishModel dishModel) {
+    public void saveDish(DishModel dishModel, String token) {
         CategoryModel categoryModel = categoryPersistencePort.getCategoryById(dishModel.getCategoryId());
         RestaurantModel restaurantModel = restaurantPersistencePort.getRestaurantByNit(dishModel.getRestaurantNit());
+        if (Integer.parseInt(restaurantModel.getCedulaPropietario()) != jwtHandler.getCedulaFromToken(token)) {
+            throw new UserNoPermissions("No tienes permisos para realizar esta acción");
+        }
         DishEntity dishEntity = dishEntityMapper.toEntity(dishModel);
         dishEntity.setCategory(categoryEntityMapper.toEntity(categoryModel));
         dishEntity.setRestaurant(restaurantEntityMapper.toEntity(restaurantModel));

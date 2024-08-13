@@ -32,4 +32,9 @@ public class OrderHandler implements IOrderHandler {
     public Page<OrderResponseDto> assignEmployeeToOrder(String token, Integer orderId, int page, int size, String status) {
         return orderServicePort.assignEmployeeToOrder(token, orderId, page, size, status).map(orderRequestMapper::toOrderResponseDto);
     }
+
+    @Override
+    public void readyOrder(String token, Integer orderId) {
+        orderServicePort.readyOrder(token, orderId);
+    }
 }
