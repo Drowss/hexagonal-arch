@@ -1,7 +1,7 @@
-package com.drow.plazoleta.infrastructure.out.mapper;
+package com.drow.mensajeria.infrastructure.out.mapper;
 
-import com.drow.plazoleta.domain.model.PinUserModel;
-import com.drow.plazoleta.infrastructure.out.entity.PinUserEntity;
+import com.drow.mensajeria.domain.model.PinUserModel;
+import com.drow.mensajeria.infrastructure.out.entity.PinUserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

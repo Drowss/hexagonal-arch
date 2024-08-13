@@ -30,10 +30,10 @@ public class CookieAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         Cookie[] cookies = request.getCookies();
-//        if (cookies == null) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
+        if (cookies == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         List<Cookie> cookieList = Arrays.asList(cookies);
 
         String token = cookieList.stream()

@@ -1,4 +1,4 @@
-package com.drow.plazoleta.infrastructure.out.entity;
+package com.drow.mensajeria.infrastructure.out.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

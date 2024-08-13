@@ -5,6 +5,8 @@ import com.drow.plazoleta.domain.spi.*;
 import com.drow.plazoleta.domain.usecase.*;
 import com.drow.plazoleta.infrastructure.out.adapter.*;
 import com.drow.plazoleta.infrastructure.out.feign.FeignClientInterceptor;
+import com.drow.plazoleta.infrastructure.out.feign.PinUserFeignClientAdapter;
+import com.drow.plazoleta.infrastructure.out.feign.UserFeignClientAdapter;
 import com.drow.plazoleta.infrastructure.out.mapper.*;
 import com.drow.plazoleta.infrastructure.out.repository.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,8 +29,7 @@ public class BeanConfiguration {
     private final IOrderEntityMapper orderEntityMapper;
     private final IOrderItemRepository orderItemRepository;
     private final IOrderItemEntityMapper orderItemMapper;
-    private final IPinUserRepository pinUserRepository;
-    private final IPinUserEntityMapper pinUserEntityMapper;
+    private final PinUserFeignClientAdapter pinUserClientAdapter;
 
     @Bean
     public IRestaurantServicePort restaurantServicePort() {
@@ -78,16 +79,16 @@ public class BeanConfiguration {
 
     @Bean
     public IOrderServicePort orderServicePort() {
-        return new OrderUseCase(orderPersistencePort(), jwtHandler, restaurantPersistencePort(), orderItemPersistencePort(), userPinPersistencePort());
-    }
-
-    @Bean
-    public IUserPinPersistencePort userPinPersistencePort() {
-        return new UserPinJpaAdapter(pinUserRepository, pinUserEntityMapper);
+        return new OrderUseCase(orderPersistencePort(), jwtHandler, restaurantPersistencePort(), orderItemPersistencePort(), pinUserFeignAdapter());
     }
 
     @Bean
     public IOrderPersistencePort orderPersistencePort() {
         return new OrderJpaAdapter(orderRepository, orderEntityMapper, restaurantEntityMapper);
+    }
+
+    @Bean
+    public PinUserFeignAdapter pinUserFeignAdapter() {
+        return new PinUserFeignAdapter(pinUserClientAdapter);
     }
 }
