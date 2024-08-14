@@ -3,10 +3,7 @@ package com.drow.plazoleta.application.exceptionhandler;
 import com.drow.plazoleta.application.exception.CategoryDoesntExist;
 import com.drow.plazoleta.application.exception.RestaurantDoesntExist;
 import com.drow.plazoleta.application.exception.UserNoPermissions;
-import com.drow.plazoleta.domain.exception.DishNotFound;
-import com.drow.plazoleta.domain.exception.DishNotOwnedRestaurant;
-import com.drow.plazoleta.domain.exception.PendingOrderException;
-import com.drow.plazoleta.domain.exception.RestaurantAlreadyExists;
+import com.drow.plazoleta.domain.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -63,6 +60,16 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(RestaurantAlreadyExists.class)
     public ResponseEntity<String> handleRestaurantAlreadyExists(RestaurantAlreadyExists e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
+    @ExceptionHandler(NotYourOrder.class)
+    public ResponseEntity<String> handleNotYourOrder(NotYourOrder e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
+    @ExceptionHandler(NotYourRestaurant.class)
+    public ResponseEntity<String> handleNotYourRestaurant(NotYourRestaurant e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 }

@@ -1,8 +1,12 @@
 package com.drow.plazoleta.domain.usecase;
 
+import com.drow.plazoleta.domain.dto.PinUserResponseDto;
+import com.drow.plazoleta.domain.exception.NotYourOrder;
+import com.drow.plazoleta.domain.exception.NotYourRestaurant;
 import com.drow.plazoleta.domain.exception.PendingOrderException;
 import com.drow.plazoleta.domain.model.OrderItemModel;
 import com.drow.plazoleta.domain.model.OrderModel;
+import com.drow.plazoleta.domain.model.RestaurantEmployeeModel;
 import com.drow.plazoleta.domain.model.RestaurantModel;
 import com.drow.plazoleta.domain.model.enums.OrderStatus;
 import com.drow.plazoleta.domain.spi.*;
@@ -21,6 +25,7 @@ public class OrderUseCase implements IOrderServicePort {
     private final IJwtHandler jwtHandler;
     private final IRestaurantPersistencePort restaurantPersistencePort;
     private final IOrderItemPersistencePort orderItemPersistencePort;
+    private final IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort;
     private final PinUserFeignPort pinUserFeignPort;
 
     @Override
@@ -80,7 +85,7 @@ public class OrderUseCase implements IOrderServicePort {
         OrderModel orderModel = orderPersistencePort.findByIdIgnoreCycle(orderId);
         System.out.println(orderModel.getEmployee() + " " + cedula);
         if (!Objects.equals(orderModel.getEmployee(), cedula)) {
-            throw new PendingOrderException("No puedes marcar una orden como lista si no eres el empleado asignado");
+            throw new NotYourOrder("No puedes marcar una orden como lista si no eres el empleado asignado");
         }
         orderModel.setItems(orderItemPersistencePort.findAllByOrderId(orderModel.getId()));
         for (OrderItemModel orderItemModel : orderModel.getItems()) {
@@ -88,6 +93,33 @@ public class OrderUseCase implements IOrderServicePort {
         }
         orderModel.setStatus(OrderStatus.LISTO);
         pinUserFeignPort.savePinUser(orderModel.getUserId(), orderId);
+        orderPersistencePort.saveOrder(orderModel);
+    }
+
+    @Override
+    public void deliverOrder(String token, Integer orderId, Integer pin) {
+        System.out.println("entra a deliver");
+        Integer cedula = jwtHandler.getCedulaFromToken(token);
+        OrderModel orderModel = orderPersistencePort.findByIdIgnoreCycle(orderId);
+        if (!Objects.equals(orderModel.getEmployee(), cedula)) {
+            throw new NotYourOrder("No puedes marcar una orden como entregada si no eres el empleado asignado");
+        }
+        System.out.println("pasa primer if");
+        orderModel.setItems(orderItemPersistencePort.findAllByOrderId(orderModel.getId()));
+        for (OrderItemModel orderItemModel : orderModel.getItems()) {
+            orderItemModel.setOrder(orderPersistencePort.findByIdIgnoreCycle(orderModel.getId()));
+        }
+        System.out.println("instancio restaurantEmployeeModel");
+        RestaurantEmployeeModel restaurantEmployeeModel = restaurantEmployeePersistencePort.findEmployeeByCedula(cedula);
+        System.out.println(restaurantEmployeeModel.getRestaurantNit() + " aaaaaaa " + orderModel.getRestaurant().getNit());
+        if (!restaurantEmployeeModel.getRestaurantNit().equals(orderModel.getRestaurant().getNit())) {
+            throw new NotYourRestaurant("No puedes marcar una orden como entregada si no pertenece a tu restaurante");
+        }
+        PinUserResponseDto pinUserResponseDto = pinUserFeignPort.findPinUser(pin);
+        if (!Objects.equals(pinUserResponseDto.getOrderId(), orderId)) {
+            throw new NotYourOrder("El pin ingresado no corresponde a la orden");
+        }
+        orderModel.setStatus(OrderStatus.ENTREGADO);
         orderPersistencePort.saveOrder(orderModel);
     }
 }

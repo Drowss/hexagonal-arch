@@ -69,8 +69,18 @@ public class OrderRestController {
         return orderHandler.assignEmployeeToOrder(token, orderId, page, size, status);
     }
 
+    @Operation(summary = "Toggle to ready an order")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Employee assigned", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Order taken by another employer", content = @Content)
+    })
     @PutMapping("/ready")
     public void readyOrder(@CookieValue("token") String token, @RequestParam Integer orderId) {
         orderHandler.readyOrder(token, orderId);
+    }
+
+    @PutMapping("/deliver")
+    public void deliverOrder(@CookieValue("token") String token, @RequestParam Integer orderId, @RequestParam Integer pin) {
+        orderHandler.deliverOrder(token, orderId, pin);
     }
 }

@@ -20,7 +20,6 @@ public class RestaurantEmployeeUseCase implements IRestaurantEmployeeServicePort
         Integer ownerDni = jwtHandler.getCedulaFromToken(token);
         RestaurantModel restaurantModel = restaurantPersistencePort.findByCedula(ownerDni.toString());
         restaurantEmployeeModel.setRestaurantNit(restaurantModel.getNit());
-        System.out.println("ESTOY EN RESTAURANTEMPLOYEE " + restaurantEmployeeModel.getEmployeeId());
         restaurantEmployeePersistencePort.saveRestaurantEmployee(restaurantEmployeeModel);
     }
 }

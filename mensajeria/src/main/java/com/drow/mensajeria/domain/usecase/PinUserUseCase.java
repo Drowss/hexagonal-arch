@@ -2,6 +2,7 @@ package com.drow.mensajeria.domain.usecase;
 
 import com.drow.mensajeria.domain.api.IPinUserServicePort;
 import com.drow.mensajeria.domain.exception.PinAlreadyAssigned;
+import com.drow.mensajeria.domain.exception.PinDoesntExist;
 import com.drow.mensajeria.domain.model.PinUserModel;
 import com.drow.mensajeria.domain.spi.IPinUserPersistencePort;
 import com.twilio.Twilio;
@@ -42,5 +43,18 @@ public class PinUserUseCase implements IPinUserServicePort {
                 new com.twilio.type.PhoneNumber(twilioPhoneNumber),
                 "Su pin de seguridad es " + randomNumber).create();
         pinUserPersistencePort.savePinUser(pinUserModel);
+    }
+
+    @Override
+    public PinUserModel findPinUser(Integer pin) {
+        PinUserModel pinUserModel = pinUserPersistencePort.findByPin(pin);
+        if (pinUserModel == null) {
+            throw new PinDoesntExist("El pin no existe");
+        }
+        PinUserModel response = new PinUserModel();
+        response.setUserId(pinUserModel.getUserId());
+        response.setOrderId(pinUserModel.getOrderId());
+        response.setPin(pinUserModel.getPin());
+        return pinUserModel;
     }
 }

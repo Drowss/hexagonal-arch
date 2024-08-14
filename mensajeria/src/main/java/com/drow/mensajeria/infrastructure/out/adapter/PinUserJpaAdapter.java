@@ -21,4 +21,9 @@ public class PinUserJpaAdapter implements IPinUserPersistencePort {
     public PinUserModel findByUserIdAndOrderId(Integer userId, Integer orderId) {
         return pinUserEntityMapper.toModel(pinUserRepository.findByUserIdAndOrderId(userId, orderId));
     }
+
+    @Override
+    public PinUserModel findByPin(Integer pin) {
+        return pinUserEntityMapper.toModel(pinUserRepository.findByPin(pin));
+    }
 }

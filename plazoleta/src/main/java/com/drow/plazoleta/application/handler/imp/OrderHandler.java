@@ -37,4 +37,9 @@ public class OrderHandler implements IOrderHandler {
     public void readyOrder(String token, Integer orderId) {
         orderServicePort.readyOrder(token, orderId);
     }
+
+    @Override
+    public void deliverOrder(String token, Integer orderId, Integer pin) {
+        orderServicePort.deliverOrder(token, orderId, pin);
+    }
 }
