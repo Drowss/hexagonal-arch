@@ -1,6 +1,8 @@
 package com.drow.plazoleta.domain.usecase;
 
 import com.drow.plazoleta.domain.dto.PinUserResponseDto;
+import com.drow.plazoleta.domain.dto.TraceabilityRequestDto;
+import com.drow.plazoleta.domain.dto.TraceabilityResponseDto;
 import com.drow.plazoleta.domain.exception.NotYourOrder;
 import com.drow.plazoleta.domain.exception.NotYourRestaurant;
 import com.drow.plazoleta.domain.exception.PendingOrderException;
@@ -14,6 +16,7 @@ import com.drow.plazoleta.domain.api.IOrderServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,6 +30,7 @@ public class OrderUseCase implements IOrderServicePort {
     private final IOrderItemPersistencePort orderItemPersistencePort;
     private final IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort;
     private final PinUserFeignPort pinUserFeignPort;
+    private final TraceabilityFeignPort traceabilityFeignPort;
 
     @Override
     public void saveOrder(String token, String restaurantNit) {
@@ -46,7 +50,15 @@ public class OrderUseCase implements IOrderServicePort {
         orderModel.setUserId(cedula);
         orderModel.setRestaurant(restaurant);
         orderModel.setStatus(OrderStatus.PENDIENTE);
-        orderPersistencePort.saveOrder(orderModel);
+        OrderModel newOrder = orderPersistencePort.saveOrder(orderModel);
+
+        TraceabilityResponseDto traceabilityResponseDto = new TraceabilityResponseDto();
+        traceabilityResponseDto.setCustomerEmail(jwtHandler.getUsername(token));
+        traceabilityResponseDto.setOrderStartDate(LocalDate.now());
+        traceabilityResponseDto.setCurrentStatus(OrderStatus.PENDIENTE.toString());
+        traceabilityResponseDto.setCustomerId(cedula);
+        traceabilityResponseDto.setOrderId(newOrder.getId());
+        traceabilityFeignPort.saveTraceability(traceabilityResponseDto);
     }
 
     @Override
@@ -64,14 +76,24 @@ public class OrderUseCase implements IOrderServicePort {
     public Page<OrderModel> assignEmployeeToOrder(String token, Integer orderId, int page, int size, String status) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
         Integer cedula = jwtHandler.getCedulaFromToken(token);
+
         OrderModel orderModelEmployee = orderPersistencePort.findByIdIgnoreCycle(orderId);
         orderModelEmployee.setEmployee(cedula);
         orderModelEmployee.setItems(orderItemPersistencePort.findAllByOrderId(orderModelEmployee.getId()));
         orderModelEmployee.setStatus(OrderStatus.valueOf(status));
+
+        TraceabilityResponseDto traceabilityResponseDto = traceabilityFeignPort.findTraceabilityByOrderId(orderId);
+        traceabilityResponseDto.setCurrentStatus(status);
+        traceabilityResponseDto.setEmployeeId(cedula);
+        traceabilityResponseDto.setEmployeeEmail(jwtHandler.getUsername(token));
+
         for (OrderItemModel orderItemModel : orderModelEmployee.getItems()) {
             orderItemModel.setOrder(orderPersistencePort.findByIdIgnoreCycle(orderModelEmployee.getId()));
         }
+
         orderPersistencePort.saveOrder(orderModelEmployee);
+        traceabilityFeignPort.saveTraceability(traceabilityResponseDto);
+
         List<OrderModel> orderModelList = orderPersistencePort.findAllByUserIdAndStatus(OrderStatus.valueOf(status), cedula, pageable);
         for (OrderModel orderModel : orderModelList) {
             orderModel.setItems(orderItemPersistencePort.findAllByOrderId(orderModel.getId()));
@@ -83,7 +105,6 @@ public class OrderUseCase implements IOrderServicePort {
     public void readyOrder(String token, Integer orderId) {
         Integer cedula = jwtHandler.getCedulaFromToken(token);
         OrderModel orderModel = orderPersistencePort.findByIdIgnoreCycle(orderId);
-        System.out.println(orderModel.getEmployee() + " " + cedula);
         if (!Objects.equals(orderModel.getEmployee(), cedula)) {
             throw new NotYourOrder("No puedes marcar una orden como lista si no eres el empleado asignado");
         }
@@ -91,27 +112,30 @@ public class OrderUseCase implements IOrderServicePort {
         for (OrderItemModel orderItemModel : orderModel.getItems()) {
             orderItemModel.setOrder(orderPersistencePort.findByIdIgnoreCycle(orderModel.getId()));
         }
+        if (orderModel.getStatus() != OrderStatus.EN_PREPARACION) {
+            throw new PendingOrderException("La orden no se encuentra en estado de preparación");
+        }
+        TraceabilityResponseDto traceabilityResponseDto = traceabilityFeignPort.findTraceabilityByOrderId(orderId);
+        System.out.println(traceabilityResponseDto.getId());
+        traceabilityResponseDto.setCurrentStatus(OrderStatus.LISTO.toString());
         orderModel.setStatus(OrderStatus.LISTO);
         pinUserFeignPort.savePinUser(orderModel.getUserId(), orderId);
         orderPersistencePort.saveOrder(orderModel);
+        traceabilityFeignPort.saveTraceability(traceabilityResponseDto);
     }
 
     @Override
     public void deliverOrder(String token, Integer orderId, Integer pin) {
-        System.out.println("entra a deliver");
         Integer cedula = jwtHandler.getCedulaFromToken(token);
         OrderModel orderModel = orderPersistencePort.findByIdIgnoreCycle(orderId);
         if (!Objects.equals(orderModel.getEmployee(), cedula)) {
             throw new NotYourOrder("No puedes marcar una orden como entregada si no eres el empleado asignado");
         }
-        System.out.println("pasa primer if");
         orderModel.setItems(orderItemPersistencePort.findAllByOrderId(orderModel.getId()));
         for (OrderItemModel orderItemModel : orderModel.getItems()) {
             orderItemModel.setOrder(orderPersistencePort.findByIdIgnoreCycle(orderModel.getId()));
         }
-        System.out.println("instancio restaurantEmployeeModel");
         RestaurantEmployeeModel restaurantEmployeeModel = restaurantEmployeePersistencePort.findEmployeeByCedula(cedula);
-        System.out.println(restaurantEmployeeModel.getRestaurantNit() + " aaaaaaa " + orderModel.getRestaurant().getNit());
         if (!restaurantEmployeeModel.getRestaurantNit().equals(orderModel.getRestaurant().getNit())) {
             throw new NotYourRestaurant("No puedes marcar una orden como entregada si no pertenece a tu restaurante");
         }
@@ -119,7 +143,24 @@ public class OrderUseCase implements IOrderServicePort {
         if (!Objects.equals(pinUserResponseDto.getOrderId(), orderId)) {
             throw new NotYourOrder("El pin ingresado no corresponde a la orden");
         }
+        TraceabilityResponseDto traceabilityResponseDto = traceabilityFeignPort.findTraceabilityByOrderId(orderId);
+        traceabilityResponseDto.setCurrentStatus(OrderStatus.ENTREGADO.toString());
+        traceabilityResponseDto.setOrderEndDate(LocalDate.now());
         orderModel.setStatus(OrderStatus.ENTREGADO);
         orderPersistencePort.saveOrder(orderModel);
+        traceabilityFeignPort.saveTraceability(traceabilityResponseDto);
+    }
+
+    @Override
+    public void deleteOrder(String token, Integer orderId) {
+        Integer cedula = jwtHandler.getCedulaFromToken(token);
+        OrderModel orderModel = orderPersistencePort.findByIdIgnoreCycle(orderId);
+        if (!Objects.equals(orderModel.getUserId(), cedula)) {
+            throw new NotYourOrder("No puedes eliminar una orden que no te pertenece");
+        }
+        if (orderModel.getStatus() != OrderStatus.PENDIENTE) {
+            throw new PendingOrderException("Lo sentimos, tu pedido ya está en proceso de preparación y no puede cancelarse");
+        }
+        orderPersistencePort.deleteOrder(orderModel);
     }
 }

@@ -1,6 +1,6 @@
 package com.drow.plazoleta.infrastructure.configuration;
 
-import com.drow.plazoleta.infrastructure.out.feign.FeignClientInterceptor;
+import com.drow.plazoleta.infrastructure.out.feign.interceptor.FeignClientInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

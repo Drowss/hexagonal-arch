@@ -4,12 +4,12 @@ import com.drow.plazoleta.domain.api.*;
 import com.drow.plazoleta.domain.spi.*;
 import com.drow.plazoleta.domain.usecase.*;
 import com.drow.plazoleta.infrastructure.out.adapter.*;
-import com.drow.plazoleta.infrastructure.out.feign.FeignClientInterceptor;
 import com.drow.plazoleta.infrastructure.out.feign.PinUserFeignClientAdapter;
-import com.drow.plazoleta.infrastructure.out.feign.UserFeignClientAdapter;
+import com.drow.plazoleta.infrastructure.out.feign.TraceabilityFeignClientAdapter;
+import com.drow.plazoleta.infrastructure.out.feign.adapter.PinUserFeignAdapter;
+import com.drow.plazoleta.infrastructure.out.feign.adapter.TraceabilityFeignAdapter;
 import com.drow.plazoleta.infrastructure.out.mapper.*;
 import com.drow.plazoleta.infrastructure.out.repository.*;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +31,7 @@ public class BeanConfiguration {
     private final IOrderItemEntityMapper orderItemMapper;
     private final PinUserFeignClientAdapter pinUserClientAdapter;
     private final IRestaurantEmployeeRepository restaurantEmployeeRepository;
+    private final TraceabilityFeignClientAdapter traceabilityFeignClientAdapter;
     private final IRestaurantEmployeeEntityMapper restaurantEmployeeEntityMapper;
 
     @Bean
@@ -81,7 +82,13 @@ public class BeanConfiguration {
 
     @Bean
     public IOrderServicePort orderServicePort() {
-        return new OrderUseCase(orderPersistencePort(), jwtHandler, restaurantPersistencePort(), orderItemPersistencePort(), restaurantEmployeePersistencePort(), pinUserFeignAdapter());
+        return new OrderUseCase(orderPersistencePort(),
+                jwtHandler,
+                restaurantPersistencePort(),
+                orderItemPersistencePort(),
+                restaurantEmployeePersistencePort(),
+                pinUserFeignAdapter(),
+                traceabilityFeignAdapter());
     }
 
     @Bean
@@ -92,6 +99,11 @@ public class BeanConfiguration {
     @Bean
     public PinUserFeignAdapter pinUserFeignAdapter() {
         return new PinUserFeignAdapter(pinUserClientAdapter);
+    }
+
+    @Bean
+    public TraceabilityFeignAdapter traceabilityFeignAdapter() {
+        return new TraceabilityFeignAdapter(traceabilityFeignClientAdapter);
     }
 
     @Bean

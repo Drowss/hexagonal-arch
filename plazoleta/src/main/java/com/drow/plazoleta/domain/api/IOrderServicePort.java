@@ -1,6 +1,5 @@
 package com.drow.plazoleta.domain.api;
 
-import com.drow.plazoleta.application.dto.response.OrderResponseDto;
 import com.drow.plazoleta.domain.model.OrderModel;
 import org.springframework.data.domain.Page;
 
@@ -14,4 +13,6 @@ public interface IOrderServicePort {
     void readyOrder(String token, Integer orderId);
 
     void deliverOrder(String token, Integer orderId, Integer pin);
+
+    void deleteOrder(String token, Integer orderId);
 }

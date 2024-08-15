@@ -14,4 +14,6 @@ public interface IOrderHandler {
     void readyOrder(String token, Integer orderId);
 
     void deliverOrder(String token, Integer orderId, Integer pin);
+
+    void deleteOrder(String token, Integer orderId);
 }

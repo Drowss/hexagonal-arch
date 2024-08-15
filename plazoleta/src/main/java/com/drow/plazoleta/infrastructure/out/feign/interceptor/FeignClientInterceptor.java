@@ -1,4 +1,4 @@
-package com.drow.plazoleta.infrastructure.out.feign;
+package com.drow.plazoleta.infrastructure.out.feign.interceptor;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

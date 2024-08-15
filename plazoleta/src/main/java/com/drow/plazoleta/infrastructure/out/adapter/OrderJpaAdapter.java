@@ -1,6 +1,5 @@
 package com.drow.plazoleta.infrastructure.out.adapter;
 
-import com.drow.plazoleta.domain.model.OrderItemModel;
 import com.drow.plazoleta.domain.model.OrderModel;
 import com.drow.plazoleta.domain.model.RestaurantModel;
 import com.drow.plazoleta.domain.model.enums.OrderStatus;
@@ -23,14 +22,15 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     private final IRestaurantEntityMapper restaurantMapper;
 
     @Override
-    public void saveOrder(OrderModel orderModel) {
-        orderRepository.save(orderMapper.toEntity(orderModel));
+    public OrderModel saveOrder(OrderModel orderModel) {
+        OrderEntity result = orderRepository.save(orderMapper.toEntity(orderModel));
+        return orderMapper.toModelList(result);
     }
 
     @Override
     public List<OrderModel> findOrderEntityByUserIdAndRestaurant(Integer cedula, RestaurantModel restaurant) {
         RestaurantEntity restaurantEntity = restaurantMapper.toEntity(restaurant);
-        return orderRepository.findAllByUserIdAndRestaurant(cedula, restaurantEntity).stream().map(orderMapper::toModel).toList();
+        return orderRepository.findAllByUserIdAndRestaurant(cedula, restaurantEntity).stream().map(orderMapper::toModelList).toList();
     }
 
     @Override
@@ -47,6 +47,11 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     public List<OrderModel> findAllByUserIdAndStatus(OrderStatus orderStatus, Integer cedula, Pageable pageable) {
         List<OrderEntity> orderEntityList = orderRepository.findAllByStatusAndUserId(orderStatus, cedula, pageable).toList();
         return orderEntityList.stream().map(orderMapper::toModelList).toList();
+    }
+
+    @Override
+    public void deleteOrder(OrderModel orderModel) {
+        orderRepository.deleteById(orderMapper.toEntity(orderModel).getId());
     }
 
 

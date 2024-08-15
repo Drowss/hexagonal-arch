@@ -1,4 +1,4 @@
-package com.drow.plazoleta.infrastructure.out.adapter;
+package com.drow.plazoleta.infrastructure.out.feign.adapter;
 
 import com.drow.plazoleta.domain.dto.PinUserResponseDto;
 import com.drow.plazoleta.domain.spi.PinUserFeignPort;

@@ -42,4 +42,9 @@ public class OrderHandler implements IOrderHandler {
     public void deliverOrder(String token, Integer orderId, Integer pin) {
         orderServicePort.deliverOrder(token, orderId, pin);
     }
+
+    @Override
+    public void deleteOrder(String token, Integer orderId) {
+        orderServicePort.deleteOrder(token, orderId);
+    }
 }

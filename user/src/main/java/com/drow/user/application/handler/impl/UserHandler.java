@@ -9,7 +9,6 @@ import com.drow.user.application.exception.UserUnderageException;
 import com.drow.user.application.feign.PlazoletaFeignClient;
 import com.drow.user.application.feign.dto.RestaurantEmployeeRequestDto;
 import com.drow.user.application.handler.IUserHandler;
-import com.drow.user.application.jwt.IJwtHandler;
 import com.drow.user.application.mapper.IUserRequestMapper;
 import com.drow.user.application.mapper.IUserResponseMapper;
 import com.drow.user.domain.api.IUserServicePort;
@@ -33,7 +32,6 @@ public class UserHandler implements IUserHandler {
     private final IUserRequestMapper userRequestMapper;
     private final IUserResponseMapper userResponseMapper;
     private final PlazoletaFeignClient plazoletaFeignClient;
-    private final IJwtHandler jwtHandler;
 
     @Override
     public void saveUser(UserRequestDto userRequestDto) {

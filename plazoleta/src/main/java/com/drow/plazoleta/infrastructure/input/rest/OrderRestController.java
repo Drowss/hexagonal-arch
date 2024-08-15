@@ -65,22 +65,35 @@ public class OrderRestController {
                                                   @RequestParam Integer orderId,
                                                   @RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "10") int size,
-                                                  @RequestParam(defaultValue = "PENDIENTE") String status) {
+                                                  @RequestParam(defaultValue = "EN_PREPARACION") String status) {
         return orderHandler.assignEmployeeToOrder(token, orderId, page, size, status);
     }
 
     @Operation(summary = "Toggle to ready an order")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Employee assigned", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Order taken by another employer", content = @Content)
+            @ApiResponse(responseCode = "409", description = "Order taken by another employer", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Order status is not preparation", content = @Content)
     })
     @PutMapping("/ready")
     public void readyOrder(@CookieValue("token") String token, @RequestParam Integer orderId) {
         orderHandler.readyOrder(token, orderId);
     }
 
+    @Operation(summary = "Order delivered")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Order status delivered", content = @Content),
+            @ApiResponse(responseCode = "409", description = "You cannot mark an order as delivered if it does not belong to your restaurant.", content = @Content),
+            @ApiResponse(responseCode = "409", description = "you cannot mark a delivered order if you are not the assigned employee", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Pin is incorrect", content = @Content)
+    })
     @PutMapping("/deliver")
     public void deliverOrder(@CookieValue("token") String token, @RequestParam Integer orderId, @RequestParam Integer pin) {
         orderHandler.deliverOrder(token, orderId, pin);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteOrder(@CookieValue("token") String token, @RequestParam Integer orderId) {
+        orderHandler.deleteOrder(token, orderId);
     }
 }
