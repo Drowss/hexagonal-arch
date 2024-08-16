@@ -1,7 +1,7 @@
 package com.drow.plazoleta.domain.usecase;
 
 import com.drow.plazoleta.domain.dto.PinUserResponseDto;
-import com.drow.plazoleta.domain.dto.TraceabilityRequestDto;
+import com.drow.plazoleta.domain.dto.RestaurantEfficiencyDto;
 import com.drow.plazoleta.domain.dto.TraceabilityResponseDto;
 import com.drow.plazoleta.domain.exception.NotYourOrder;
 import com.drow.plazoleta.domain.exception.NotYourRestaurant;
@@ -16,7 +16,7 @@ import com.drow.plazoleta.domain.api.IOrderServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,7 +54,7 @@ public class OrderUseCase implements IOrderServicePort {
 
         TraceabilityResponseDto traceabilityResponseDto = new TraceabilityResponseDto();
         traceabilityResponseDto.setCustomerEmail(jwtHandler.getUsername(token));
-        traceabilityResponseDto.setOrderStartDate(LocalDate.now());
+        traceabilityResponseDto.setOrderStartDate(LocalDateTime.now());
         traceabilityResponseDto.setCurrentStatus(OrderStatus.PENDIENTE.toString());
         traceabilityResponseDto.setCustomerId(cedula);
         traceabilityResponseDto.setOrderId(newOrder.getId());
@@ -145,7 +145,7 @@ public class OrderUseCase implements IOrderServicePort {
         }
         TraceabilityResponseDto traceabilityResponseDto = traceabilityFeignPort.findTraceabilityByOrderId(orderId);
         traceabilityResponseDto.setCurrentStatus(OrderStatus.ENTREGADO.toString());
-        traceabilityResponseDto.setOrderEndDate(LocalDate.now());
+        traceabilityResponseDto.setOrderEndDate(LocalDateTime.now());
         orderModel.setStatus(OrderStatus.ENTREGADO);
         orderPersistencePort.saveOrder(orderModel);
         traceabilityFeignPort.saveTraceability(traceabilityResponseDto);
@@ -161,6 +161,16 @@ public class OrderUseCase implements IOrderServicePort {
         if (orderModel.getStatus() != OrderStatus.PENDIENTE) {
             throw new PendingOrderException("Lo sentimos, tu pedido ya está en proceso de preparación y no puede cancelarse");
         }
+        TraceabilityResponseDto traceabilityResponseDto = traceabilityFeignPort.findTraceabilityByOrderId(orderId);
+        traceabilityFeignPort.deleteTraceabilityByOrderId(traceabilityResponseDto.getId());
         orderPersistencePort.deleteOrder(orderModel);
+    }
+
+    @Override
+    public RestaurantEfficiencyDto getEfficiency(String token) {
+        Integer cedula = jwtHandler.getCedulaFromToken(token);
+        String restaurantNit = restaurantPersistencePort.findByCedula(String.valueOf(cedula)).getNit();
+        List<OrderModel> orderModelList = orderPersistencePort.findAllByRestaurantNit(restaurantNit);
+        return traceabilityFeignPort.restaurantEfficiency(orderModelList);
     }
 }

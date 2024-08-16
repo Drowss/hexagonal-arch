@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +19,6 @@ public class TraceabilityResponseDto {
     private String currentStatus;
     private Integer employeeId;
     private String employeeEmail;
-    private LocalDate orderStartDate;
-    private LocalDate orderEndDate;
+    private LocalDateTime orderStartDate;
+    private LocalDateTime orderEndDate;
 }

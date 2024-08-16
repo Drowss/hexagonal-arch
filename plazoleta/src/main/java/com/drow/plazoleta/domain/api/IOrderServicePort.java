@@ -1,7 +1,10 @@
 package com.drow.plazoleta.domain.api;
 
+import com.drow.plazoleta.domain.dto.RestaurantEfficiencyDto;
 import com.drow.plazoleta.domain.model.OrderModel;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface IOrderServicePort {
     void saveOrder(String token, String restaurantNit);
@@ -15,4 +18,6 @@ public interface IOrderServicePort {
     void deliverOrder(String token, Integer orderId, Integer pin);
 
     void deleteOrder(String token, Integer orderId);
+
+    RestaurantEfficiencyDto getEfficiency(String token);
 }

@@ -54,5 +54,10 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
         orderRepository.deleteById(orderMapper.toEntity(orderModel).getId());
     }
 
+    @Override
+    public List<OrderModel> findAllByRestaurantNit(String restaurantNit) {
+        return orderRepository.findAllByRestaurantNit(restaurantNit).stream().map(orderMapper::toModelList).toList();
+    }
+
 
 }

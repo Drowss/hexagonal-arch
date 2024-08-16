@@ -1,5 +1,6 @@
 package com.drow.plazoleta.domain.spi;
 
+import com.drow.plazoleta.domain.dto.RestaurantEfficiencyDto;
 import com.drow.plazoleta.domain.model.OrderModel;
 import com.drow.plazoleta.domain.model.RestaurantModel;
 import com.drow.plazoleta.domain.model.enums.OrderStatus;
@@ -18,4 +19,6 @@ public interface IOrderPersistencePort {
 
 
     void deleteOrder(OrderModel orderModel);
+
+    List<OrderModel> findAllByRestaurantNit(String restaurantNit);
 }

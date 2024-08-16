@@ -6,4 +6,6 @@ public interface ITraceabilityPersistencePort {
     void saveTraceability(TraceabilityModel traceabilityModel);
 
     TraceabilityModel findTraceabilityByOrderId(Integer orderId);
+
+    void deleteTraceabilityByOrderId(String orderId);
 }

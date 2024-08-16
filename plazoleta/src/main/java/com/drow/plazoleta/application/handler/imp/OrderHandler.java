@@ -4,11 +4,14 @@ import com.drow.plazoleta.application.dto.response.OrderResponseDto;
 import com.drow.plazoleta.application.handler.IOrderHandler;
 import com.drow.plazoleta.application.mapper.IOrderRequestMapper;
 import com.drow.plazoleta.domain.api.IOrderServicePort;
+import com.drow.plazoleta.domain.dto.RestaurantEfficiencyDto;
 import com.drow.plazoleta.domain.model.OrderModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -46,5 +49,10 @@ public class OrderHandler implements IOrderHandler {
     @Override
     public void deleteOrder(String token, Integer orderId) {
         orderServicePort.deleteOrder(token, orderId);
+    }
+
+    @Override
+    public RestaurantEfficiencyDto getEfficiency(String token) {
+        return orderServicePort.getEfficiency(token);
     }
 }

@@ -1,6 +1,6 @@
 package com.drow.trazabilidad.domain.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class TraceabilityModel {
     private String id;
@@ -10,10 +10,10 @@ public class TraceabilityModel {
     private String currentStatus;
     private Integer employeeId;
     private String employeeEmail;
-    private LocalDate orderStartDate;
-    private LocalDate orderEndDate;
+    private LocalDateTime orderStartDate;
+    private LocalDateTime orderEndDate;
 
-    public TraceabilityModel(String id, Integer orderId, Integer customerId, String customerEmail, String currentStatus, Integer employeeId, String employeeEmail, LocalDate orderStartDate, LocalDate orderEndDate) {
+    public TraceabilityModel(String id, Integer orderId, Integer customerId, String customerEmail, String currentStatus, Integer employeeId, String employeeEmail, LocalDateTime orderStartDate, LocalDateTime orderEndDate) {
         this.id = id;
         this.orderId = orderId;
         this.customerId = customerId;
@@ -84,19 +84,19 @@ public class TraceabilityModel {
         this.employeeEmail = employeeEmail;
     }
 
-    public LocalDate getOrderStartDate() {
+    public LocalDateTime getOrderStartDate() {
         return orderStartDate;
     }
 
-    public void setOrderStartDate(LocalDate orderStartDate) {
+    public void setOrderStartDate(LocalDateTime orderStartDate) {
         this.orderStartDate = orderStartDate;
     }
 
-    public LocalDate getOrderEndDate() {
+    public LocalDateTime getOrderEndDate() {
         return orderEndDate;
     }
 
-    public void setOrderEndDate(LocalDate orderEndDate) {
+    public void setOrderEndDate(LocalDateTime orderEndDate) {
         this.orderEndDate = orderEndDate;
     }
 }

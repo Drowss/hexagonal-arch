@@ -33,6 +33,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/order/ready").hasRole("EMPLEADO")
                         .requestMatchers("/api/v1/order/deliver").hasRole("EMPLEADO")
                         .requestMatchers("/api/v1/order/delete").hasRole("CLIENTE")
+                        .requestMatchers("/api/v1/order/efficiency").hasRole("PROPIETARIO")
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(cookieAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

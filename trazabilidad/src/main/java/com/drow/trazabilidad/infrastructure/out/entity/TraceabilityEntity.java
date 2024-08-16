@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -21,6 +21,6 @@ public class TraceabilityEntity {
     private String currentStatus;
     private Integer employeeId;
     private String employeeEmail;
-    private LocalDate orderStartDate;
-    private LocalDate orderEndDate;
+    private LocalDateTime orderStartDate;
+    private LocalDateTime orderEndDate;
 }

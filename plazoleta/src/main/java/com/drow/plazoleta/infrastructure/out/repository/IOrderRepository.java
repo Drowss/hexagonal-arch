@@ -12,4 +12,6 @@ import java.util.List;
 public interface IOrderRepository extends JpaRepository<OrderEntity, Integer> {
     List<OrderEntity> findAllByUserIdAndRestaurant(Integer userId, RestaurantEntity restaurant);
     Page<OrderEntity> findAllByStatusAndUserId(OrderStatus status, Integer cedula, Pageable pageable);
+
+    List<OrderEntity> findAllByRestaurantNit(String restaurantNit);
 }

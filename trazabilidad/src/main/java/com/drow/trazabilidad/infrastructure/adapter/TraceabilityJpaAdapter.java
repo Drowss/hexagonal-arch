@@ -24,4 +24,9 @@ public class TraceabilityJpaAdapter implements ITraceabilityPersistencePort {
         TraceabilityEntity traceabilityEntity = traceabilityRepository.findByOrderId(orderId);
         return traceabilityEntityMapper.toModel(traceabilityEntity);
     }
+
+    @Override
+    public void deleteTraceabilityByOrderId(String orderId) {
+        traceabilityRepository.deleteById(orderId);
+    }
 }
